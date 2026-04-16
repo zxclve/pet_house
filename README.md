@@ -51,6 +51,7 @@
 - 작업할 폴더에서 우클릭 후 Git Bash 클릭!
 - git clone https://github.com/zxclve/pet_house.git 
 
+### 기존 Git Bash 종료후 클론받은 pet_house 폴더안에서 Git Bash 다시 열기
 ### Git dev 브랜치로 이동
 - git checkout dev
 
