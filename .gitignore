@@ -1,0 +1,26 @@
+# Java / Spring
+build/
+.gradle/
+out/
+*.class
+*.jar
+*.war
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Env
+.env
+
+# Node
+node_modules/
+dist/
