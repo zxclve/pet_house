@@ -27,6 +27,7 @@ import pet.house.animal.User.User;
 @RequiredArgsConstructor // 이거 final 필드에 자동으로 인젝션할려고 사용(의존성 주입)
 public class PostService {
     private final PostRepository postRepository;
+    private final PostSseService postSseService;
 
     //게시글 생성
     public PostSite createPost(PostSite postSite) {

@@ -24,14 +24,14 @@
 - Spring Web
 - Lombok
 
-### Project Structure
+## Project Structure
 - pet_house/
 - ├─ backend/    # Spring Boot (API 서버)
 - ├─ frontend/   # Next.js (React + TypeScript)
 - └─ README.md
 
-### 실행 방법
-# Backend 실행
+## 실행 방법
+### Backend 실행
 - cd backend
 - ./gradlew bootRun
 
@@ -39,11 +39,30 @@
 
 - gradlew.bat bootRun
 
-# Frontend 실행
+### Frontend 실행
 - cd frontend
 - npm install
 - npm run dev
-- localhost:http://localhost:3000
+- localhost: http://localhost:3000
 
-### Git-협업방법(VSCODE)
-https://develoft.tistory.com/7
+## Git Bash 설정 방법
+
+### Git 클론 생성
+- 작업할 폴더에서 우클릭 후 Git Bash 클릭!
+- git clone https://github.com/zxclve/pet_house.git 
+
+### 기존 Git Bash 종료후 클론받은 pet_house 폴더안에서 Git Bash 다시 열기
+### Git dev 브랜치로 이동
+- git checkout dev
+
+### Git dev 브랜치에서 본인이 작업할 브랜치 생성
+- git checkout -b feature/기능명
+
+## Git 커밋 & 푸시 시 주의사항
+- 가급적이면 브랜치를 이용해서 작업
+- Backend 작업 시 폴더 선택을 ani_back으로 선택
+- Frontend 작업 시 폴더 선택을 ani_front로 선택
+- 작업 마무리 후 커밋 & 푸시할 때는 pet_house 폴더 선택 후 진행!!!
+
+## Git 협업 방법 (VS Code)
+https://develoft.tistory.com/7 
