@@ -48,6 +48,7 @@ public class Contracts {
     private LocalDate adoption_app_date; //입양 신청 날짜
 
     @Enumerated(EnumType.STRING)
+    @Builder.Default
     @Column(name = "status", nullable = false, columnDefinition = "CHAR(1) DEFAULT 'A'")
     private ContractsStatus status = ContractsStatus.A; //계약 상태
     
@@ -55,18 +56,21 @@ public class Contracts {
     private LocalDate contract_date; //계약 체결 날짜(분양일)
     
     @Enumerated(EnumType.STRING)
+    @Builder.Default
     @Column(name = "delivery_method", nullable = false)
     private Contracts_Delivery deliveryMethod = Contracts_Delivery.DIRECT; //인도 방법
 
+    @Builder.Default
     @Column(precision = 10, scale = 2, nullable = true, columnDefinition = "DECIMAL(10,2) DEFAULT 0.00")
     private BigDecimal adoption_fee = BigDecimal.ZERO; //순수 분양금액
     
+    @Builder.Default
     @Column(precision = 10, scale = 2, nullable = true, columnDefinition = "DECIMAL(10,2) DEFAULT 0.00")
     private BigDecimal commission_fee = BigDecimal.ZERO; //수수료 (예: 10% -> adoption_fee의 0.1)
     
+    @Builder.Default
     @Column(precision = 10, scale = 2, nullable = true, columnDefinition = "DECIMAL(10,2) DEFAULT 0.00")
     private BigDecimal total_amount = BigDecimal.ZERO; //총 결제 금액 (분양금액 + 추가 비용)
-
 
     @Column(name = "created_at", updatable = false,
         columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")

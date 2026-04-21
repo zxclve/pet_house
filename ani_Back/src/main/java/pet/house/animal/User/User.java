@@ -52,6 +52,7 @@ public class User {
     @Column(name = "address2", nullable = true, columnDefinition = "TEXT")
     private String address2; //상세주소(시군구)
 
+    @Builder.Default
     @Column(name = "user_type", nullable = false, length = 1, columnDefinition = "CHAR(1) DEFAULT 'I'") 
     @Enumerated(EnumType.STRING)
     private UserType userType = UserType.I; 
