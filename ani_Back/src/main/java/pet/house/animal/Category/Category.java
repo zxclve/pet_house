@@ -22,7 +22,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class category {
+public class Category {
     //DB명세에 맞게 작성
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) //auto_increase
@@ -30,13 +30,13 @@ public class category {
     private Long categoryId;
 
     @Column(name = "category_name", nullable = false, length = 100)
-    private String category_name;
+    private String categoryName;
 
     @Column(name = "display_order", nullable = false, columnDefinition = "INT DEFAULT 1")
-    private int display_order; //카테고리 노출 순서 
+    private int displayOrder; //카테고리 노출 순서 
 
     @Column(name = "is_active", nullable = false, length = 1, columnDefinition = "CHAR(1) DEFAULT 'Y'")
-    private String is_active; //카테고리 활성화 여부 (Y/N)
+    private String isActive; //카테고리 활성화 여부 (Y/N)
 
     @Column(name = "created_at", updatable = false,
             columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
