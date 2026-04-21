@@ -30,7 +30,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final PostSseService postSseService;
     private final FileService fileService; //파일 업로드 서비스
-    
+
     //게시글 생성 
     //이미지 받는거 안보임
     public PostSite createPost(PostSite postSite, MultipartFile image) {
