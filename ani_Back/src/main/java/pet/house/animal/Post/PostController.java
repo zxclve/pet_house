@@ -9,13 +9,13 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController //REST API 컨트롤러(JSON응답)
@@ -44,11 +44,15 @@ public class PostController {
 
     //게시글 생성
     // POST /api/posts
-    @PostMapping
-    @PreAuthorize("isAuthenticated()") //로그인 사용자만 접근가능
-    public ResponseEntity<PostSite> create(@Valid @RequestBody PostSite postSite) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(postService.createPost(postSite)); 
-    } //요청 Json -> PostSite 객체로 변환한다음 유효성검사(@Valid), 생성성공시 201상태코드 반환
+    @PostMapping(consumes = "multipart/form-data")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<PostSite> create(
+            @RequestPart("post") PostSite postSite,
+            @RequestPart(value = "image", required = false) MultipartFile image
+    ) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(postService.createPost(postSite, image));
+    }
 
     //분양신청
     // POST /api/posts/{postId}/apply
@@ -117,4 +121,5 @@ public class PostController {
         // 이후 서버에서 이벤트 발생 시 push 전송됨
         return postSseService.subscribe();
     }
+
 }

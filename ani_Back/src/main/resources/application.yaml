@@ -21,3 +21,8 @@ spring:
 logging:
   level:
     org.hibernate.SQL: debug
+
+# 파일 업로드 경로(이미지 파일)
+# 전부 호환되는 파일경로
+file: 
+  path: ${user.dir}/uploads/image

@@ -14,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -27,24 +28,36 @@ import pet.house.animal.User.User;
 @RequiredArgsConstructor // 이거 final 필드에 자동으로 인젝션할려고 사용(의존성 주입)
 public class PostService {
     private final PostRepository postRepository;
+    private final PostSseService postSseService;
+    private final FileService fileService; //파일 업로드 서비스
+    
+    //게시글 생성 
+    //이미지 받는거 안보임
+    public PostSite createPost(PostSite postSite, MultipartFile image) {
 
-    //게시글 생성
-    public PostSite createPost(PostSite postSite) {
-        //생성 시간이 비어있으면 현재시간으로 설정
+        // 생성 시간
         if (postSite.getCreatedAt() == null) {
             postSite.setCreatedAt(LocalDateTime.now());
         }
-        //수정시간은 현재시간으로
+
+        // 수정 시간
         postSite.setUpdatedAt(LocalDateTime.now());
-        //상태값 없으면 기본값인(A)로 설정 -> 상태값은 enum으로 관리
+
+        // 상태 기본값
         if (postSite.getStatus() == null) {
             postSite.setStatus(PostStatus.A);
         }
-        //DB에 저장한 후 저장된 엔티티 반환 
+
+        // 이미지 처리 
+        if (image != null && !image.isEmpty()) {
+            String imageUrl = fileService.upload(image);
+            postSite.setImage_url(imageUrl);
+        }
+        // 저장
         return postRepository.save(postSite);
     }
 
-    // 게시글 목록 조회 + 페이징 + 검색
+    // 게시글 목록 조회 + 페이징 + 검색 
     public Page<PostSite> getList(int page, String keyword){
         List<Sort.Order> sorts = new ArrayList<>();  //정렬리스트 생성
         sorts.add(Sort.Order.desc("createdAt")); //createdAt 기준 내림차순 정렬 (이러면은 가장 높은값인 최신게 앞으로)
@@ -132,3 +145,5 @@ WHERE
 ORDER BY p.created_at DESC
 LIMIT 20 OFFSET :offset; 
 */
+
+//이미지 저장 로직 -> 로컬에 저장하고 url을 db에 저장

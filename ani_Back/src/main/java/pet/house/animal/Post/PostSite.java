@@ -60,6 +60,7 @@ public class PostSite {
     @Column(name = "color_features", nullable = false, columnDefinition = "TEXT")
     private String colorFeatures; //동물 특징
 
+    @Builder.Default
     @Column(precision = 10, scale = 2, nullable = false, columnDefinition = "DECIMAL(10,2) DEFAULT 0.00")
     private BigDecimal price = BigDecimal.ZERO; //가격
 
@@ -68,6 +69,7 @@ public class PostSite {
 
     // ENUM 매핑
     @Enumerated(EnumType.STRING)
+    @Builder.Default
     @Column(name = "status", nullable = false, columnDefinition = "CHAR(1) DEFAULT 'A'")
     private PostStatus status = PostStatus.A; 
     //게시글 상태, enum으로 관리 (A: Active, S: Sold, D: Deleted) 기본값 A 
