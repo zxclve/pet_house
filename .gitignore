@@ -28,3 +28,5 @@ node_modules/
 dist/
 .next/
 *.sst
+
+ani_Back/bin/
