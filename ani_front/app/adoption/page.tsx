@@ -1,9 +1,15 @@
 "use client";
 
+// 페이지 이동 기능을 사용하기 위한 임포트
+import { useRouter } from "next/navigation";
+
 export default function AdoptionDetailPage() {
-
+  
+  // 페이지 이동 기능
+  const router = useRouter();
+  // 기본상태 표시
   const status = "신청";
-
+  // 상태 변화시 나타낼 CSS
   const statusList = [
     { name: "신청", bg: "bg-orange-100", text: "text-orange-600", dot: "bg-orange-500" },
     { name: "취소", bg: "bg-red-100", text: "text-red-600", dot: "bg-red-500" },
@@ -102,11 +108,11 @@ export default function AdoptionDetailPage() {
       {/* 하단 버튼 */}
       <div className="flex justify-center gap-4 mt-6">
         <button
-          type="button"
+          type="button" onClick={() => router.push("/adoption/contract")} 
           className="px-6 bg-blue-500 text-white p-2 rounded hover:bg-blue-600">입양신청</button>
 
         <button
-          type="button"
+          type="button" onClick={() => router.back()}
           className="px-6 bg-gray-500 text-white p-2 rounded hover:bg-gray-600">목록으로</button>
       </div>
     </div>
