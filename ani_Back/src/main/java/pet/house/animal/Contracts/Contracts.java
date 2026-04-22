@@ -21,7 +21,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pet.house.animal.Post.PostSite;
-import pet.house.animal.User.User;
+import pet.house.animal.User.UserEntity;
 
 @Entity
 @Table(name = "adoption_contracts")
@@ -42,7 +42,7 @@ public class Contracts {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "buyer_id", nullable = false)
-    private User buyer; //FK (User)
+    private UserEntity buyer; //FK (User)
     
     @Column(name = "adoption_app_date", nullable = false)
     private LocalDate adoption_app_date; //입양 신청 날짜

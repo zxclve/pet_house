@@ -32,10 +32,23 @@ public class SecurityConfig {
         http
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .csrf(csrf -> csrf.disable())
+            .headers(headers -> headers.frameOptions(frame -> frame.disable()))            
             .sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/user/login", "/user/signup").permitAll()
+                .requestMatchers(
+                    "/user/login", 
+                    "/user/signup",
+                    
+                    // Swagger
+                    "/v3/api-docs/**",
+                    "/swagger-ui/**",
+                    "/swagger-ui.html",
+
+                    // h2
+                    "/h2-console/**"
+
+                ).permitAll()
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form.disable())

@@ -44,7 +44,9 @@ public class UserEntity {
     private String address2;
 
     @Enumerated(EnumType.STRING)
+
     @Column(name = "user_type", nullable = false, length = 1, columnDefinition = "CHAR(1) DEFAULT 'I'") 
+    @Builder.Default
     private UserType usertype = UserType.I; 
 
     @CreationTimestamp

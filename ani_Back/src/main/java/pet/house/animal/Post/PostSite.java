@@ -23,7 +23,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pet.house.animal.Category.Category;
-import pet.house.animal.User.User;
+import pet.house.animal.User.UserEntity;
 
 @Entity
 @Table(name = "adoption_posts")
@@ -46,7 +46,7 @@ public class PostSite {
     // FK (User = seller)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "seller_id", nullable = false)
-    private User seller;
+    private UserEntity seller;
 
     @Column(nullable = false, length = 50)
     private String breed; //품종
