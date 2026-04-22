@@ -39,7 +39,7 @@ public class PostService {
         savedPost.setPrice(price);
         savedPost.setHealthStatus(healthStatus);
         savedPost.setStatus(null); //이부분은 처리로직 필요
-        savedPost.setImage_url(image_url); //사진은 로컬에서 업로드하는 방식
+        savedPost.setImageUrl(image_url); //사진은 로컬에서 업로드하는 방식
         savedPost.setCreatedAt(LocalDateTime.now()); 
         savedPost.setUpdatedAt(LocalDateTime.now());
 
@@ -75,7 +75,7 @@ public class PostService {
         post.setColorFeatures(colorFeatures);
         post.setPrice(price);
         post.setHealthStatus(healthStatus);
-        post.setImage_url(image_url);
+        post.setImageUrl(image_url);
         post.setUpdatedAt(LocalDateTime.now());
 
         this.postRepository.save(post);

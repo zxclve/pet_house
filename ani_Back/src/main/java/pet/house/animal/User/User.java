@@ -17,6 +17,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pet.house.animal.Post.PostSite;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -26,43 +28,47 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) //auto_increase
-    @Column(name = "user_id", nullable = false,  unique = true)
-    private Long userId; //PK , 유저 관리할때 필요한 ID
-    
-    @Column(name = "login_id", nullable = false, unique = true, length = 50)
-    private String login_id; //로그인 아이디
 
-    @Email
-    @Column(name = "email", nullable = false, unique = true, length = 100)
-    private Email email; //이메일
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id", nullable = false, unique = true)
+    private Long userId;
+
+    @Column(name = "login_id", nullable = false, unique = true, length = 50)
+    private String login_id;
+
+   @Email
+   @Column(name = "email", nullable = false, unique = true, length = 100)
+   private String email;
 
     @Column(name = "password", nullable = false, length = 255)
-    private String password; //비밀번호
+    private String password;
 
     @Column(name = "username", nullable = false, length = 50)
-    private String username; //유저 이름
+    private String username;
 
     @Column(name = "phone_number", nullable = false, length = 20)
-    private String phone_number; //전화번호
+    private String phone_number;
 
     @Column(name = "address1", nullable = false, length = 255)
-    private String address1; //기본주소(도)
+    private String address1;
 
-    @Column(name = "address2", nullable = true, columnDefinition = "TEXT")
-    private String address2; //상세주소(시군구)
+    @Column(name = "address2", columnDefinition = "TEXT")
+    private String address2;
 
-    @Column(name = "user_type", nullable = false, length = 1, columnDefinition = "CHAR(1) DEFAULT 'I'") 
     @Enumerated(EnumType.STRING)
-    private UserType user_type = UserType.I; 
-    // A("Admin"), I("individual(개인)"), B("business(사업자)");
+    @Column(name = "user_type", nullable = false, length = 1,
+            columnDefinition = "CHAR(1) DEFAULT 'I'")
+    private UserType user_type = UserType.I;
 
     @Column(name = "created_at", updatable = false,
             columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
-    private LocalDateTime created_at; //회원가입 날짜
-    
+    private LocalDateTime created_at;
+
     @Column(name = "updated_at",
             columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
-    private LocalDateTime updated_at; //회원정보 수정 날짜
+    private LocalDateTime updated_at;
+
+    @OneToMany(mappedBy = "seller")
+    private List<PostSite> posts;
 }
