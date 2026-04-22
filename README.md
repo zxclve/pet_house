@@ -66,5 +66,8 @@
 
 ## Git 협업 방법 (VS Code)
 https://develoft.tistory.com/7 
+<<<<<<< HEAD
 
 - 테스트 수정
+=======
+>>>>>>> b430d7e75ca27783e2c1ba8cb0e646135cbb3a60
