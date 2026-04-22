@@ -1,8 +1,8 @@
 package pet.house.animal.Contracts;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
@@ -11,12 +11,12 @@ public class ContractsController {
 
     private final ContractsService contractsService;
 
-    @GetMapping
-    public PostContractResponse getContracts(
-            @RequestParam(required = false) String type,
-            @RequestParam(required = false) Long contractId,
-            @RequestParam(required = false) String status
-    ) {
-        return contractsService.getContracts(type, contractId, status);
-    }
+@GetMapping
+public PostContractResponse getContracts(
+        @RequestParam String type,
+        @RequestParam(required = false) Long contractId,
+        @RequestParam String status
+) {
+    return contractsService.getContracts(type, contractId, status);
+}
 }
