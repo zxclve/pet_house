@@ -4,9 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
-import java.util.Locale.Category;
-
-import org.springframework.cglib.core.Local;
+import pet.house.animal.Category.Category;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -25,7 +23,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import pet.house.animal.User.User;
+import pet.house.animal.User.UserEntity;
 
 @Entity
 @Table(name = "adoption_posts")
@@ -48,7 +46,7 @@ public class PostSite {
     // FK (User = seller)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "seller_id", nullable = false)
-    private User seller;
+    private UserEntity seller;
 
     @Column(nullable = false, length = 50)
     private String breed; //품종
@@ -89,9 +87,9 @@ public class PostSite {
     
     //입양 신청수 
     @OneToMany
-    Set<User> adoption_sumit;
+    Set<UserEntity> adoption_sumit;
     
     //분양 신청수
     @OneToMany
-    Set<User> sale_sumit;
+    Set<UserEntity> sale_sumit;
 }

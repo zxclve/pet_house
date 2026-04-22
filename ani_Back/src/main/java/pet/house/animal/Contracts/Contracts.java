@@ -40,14 +40,12 @@ public class Contracts {
     @Column(name = "adoption_app_date", nullable = false)
     private LocalDate adoption_app_date; //입양 신청 날짜
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, columnDefinition = "CHAR(1) DEFAULT 'A'")
     private String status; //계약 상태 (예: "Pending", "Approved", "Rejected") //enum으로 관리
     
     @Column(name = "contract_date", nullable = false)
     private LocalDate contract_date; //계약 체결 날짜(분양일)
     
-    @Enumerated(EnumType.STRING)
     @Column(name = "delivery_method", nullable = false, columnDefinition = "CHAR(1) DEFAULT 'A'")
     private String delivery_method; //인도 방법 (예: "Direct", "Delivery") //enum으로 관리
 
@@ -59,7 +57,6 @@ public class Contracts {
     
     @Column(precision = 10, scale = 2, nullable = true, columnDefinition = "DECIMAL(10,2) DEFAULT 0.00")
     private BigDecimal total_amount = BigDecimal.ZERO; //총 결제 금액 (분양금액 + 추가 비용)
-
 
     @Column(name = "created_at", updatable = false,
         columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")

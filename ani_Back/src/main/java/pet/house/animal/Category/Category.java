@@ -22,7 +22,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class category {
+public class Category {
     //DB명세에 맞게 작성
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) //auto_increase
