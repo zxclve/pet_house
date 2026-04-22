@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 import pet.house.animal.Post.PostStatus;
 import pet.house.animal.Post.PostService;
 import pet.house.animal.Post.PostSite;
-import pet.house.animal.User.User;
+import pet.house.animal.User.UserEntity;
 import pet.house.animal.User.UserRepository;
 import pet.house.animal.User.UserType;
 
@@ -31,12 +31,12 @@ public class ContractsService {
     @Transactional //트랜잭션 (중간 실패시 롤백)
     public void apply(Long postId, String loginId) {
         //로그인 ID로 사용자 조회
-        User buyer = userRepository.findByLoginId(loginId)
+        UserEntity buyer = userRepository.findByLoginid(loginId)
                 .orElseThrow(() -> new RuntimeException("유저를 찾을 수 없습니다."));
         //게시글 조회
         PostSite post = postService.getPost(postId);
         //이미 신청했는지 체크(중복 신청 방지)
-        contractsRepository.findByPost_PostIdAndBuyer_UserId(postId, buyer.getUserId())
+        contractsRepository.findByPost_PostIdAndBuyer_Userid(postId, buyer.getUserid())
                 .ifPresent(c -> { throw new RuntimeException("이미 신청한 게시글입니다."); });
         //계약 엔티티 생성 
         Contracts contracts = Contracts.builder()
@@ -60,10 +60,10 @@ public class ContractsService {
     @Transactional
     public void cancel(Long postId, String loginId) {
         //사용자 조회
-        User buyer = userRepository.findByLoginId(loginId)
+        UserEntity buyer = userRepository.findByLoginid(loginId)
                 .orElseThrow(() -> new RuntimeException("유저를 찾을 수 없습니다."));
         //해당 게시글 + 사용자 계약 조회
-        Contracts contracts = contractsRepository.findByPost_PostIdAndBuyer_UserId(postId, buyer.getUserId())
+        Contracts contracts = contractsRepository.findByPost_PostIdAndBuyer_Userid(postId, buyer.getUserid())
                 .orElseThrow(() -> new RuntimeException("신청 내역이 없습니다."));
 
         contracts.setStatus(ContractsStatus.C); //상태값을 C(취소) 로 변경
@@ -78,10 +78,10 @@ public class ContractsService {
     @Transactional
     public void completeByAdmin(Long postId, String adminLoginId) {
         //관리자 사용자 조회
-        User admin = userRepository.findByLoginId(adminLoginId)
+        UserEntity admin = userRepository.findByLoginid(adminLoginId)
                 .orElseThrow(() -> new RuntimeException("유저를 찾을 수 없습니다."));
         //관리자 권한 체크
-        if (admin.getUserType() != UserType.A) {
+        if (admin.getUsertype() != UserType.A) {
             throw new RuntimeException("관리자만 완료 처리를 할 수 있습니다.");
         }
         //해당 게시글에서 가장 최근 ACTIVE 계약 조회
@@ -101,10 +101,10 @@ public class ContractsService {
     public void cancelByAdmin(Long postId, String adminLoginId) {
 
         // 관리자 조회
-        User admin = userRepository.findByLoginId(adminLoginId)
+        UserEntity admin = userRepository.findByLoginid(adminLoginId)
                 .orElseThrow(() -> new RuntimeException("유저를 찾을 수 없습니다."));
         // 관리자 권한 체크
-        if (admin.getUserType() != UserType.A) {
+        if (admin.getUsertype() != UserType.A) {
             throw new RuntimeException("관리자만 취소 처리를 할 수 있습니다.");
         }
         // 가장 최근 ACTIVE 계약 조회

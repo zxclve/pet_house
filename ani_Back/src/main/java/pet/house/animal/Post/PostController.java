@@ -27,7 +27,9 @@ public class PostController {
     private final pet.house.animal.Contracts.ContractsService contractsService; //계약(신청/취소/완료) 처리 서비스
 
     //게시글 목록 조회(페이징 + 검색)
-    // GET /api/posts?page=0&keyword=검색어 -> SWAGGER 달아놓았음 http://localhost:8080/swagger-ui/index.html 확인
+    //H2 db http://localhost:8686/h2-console/login.jsp?jsessionid=785e37dd2dfd8622271cccb69b48d206
+    //h2 db jdbc:h2:mem:testdb에 sa
+    // GET /api/posts?page=0&keyword=검색어 -> SWAGGER 달아놓았음 http://localhost:8686/swagger-ui/index.html 확인
     @GetMapping
     public Page<PostSite> list(
             @RequestParam(defaultValue = "0") int page, //페이지 번호

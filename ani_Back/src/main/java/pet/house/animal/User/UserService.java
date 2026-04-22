@@ -4,7 +4,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pet.house.animal.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
