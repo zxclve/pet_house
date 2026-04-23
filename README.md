@@ -66,5 +66,3 @@
 
 ## Git 협업 방법 (VS Code)
 https://develoft.tistory.com/7 
-
-- 테스트 수정
