@@ -1,0 +1,189 @@
+/* 가운데 폼 전체 카드 */
+.w-\[90\%\].max-w-3xl.mx-auto.p-6 {
+  width: 100% !important;
+  max-width: 720px !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+}
+
+/* 카드 본체 */
+.space-y-4.border-2.border-red-300.p-6.rounded-lg.shadow {
+  border: 1px solid #f6dbe4 !important;
+  border-radius: 24px !important;
+  background: #ffffff !important;
+  padding: 32px 24px !important;
+  box-shadow: 0 12px 30px rgba(255, 122, 162, 0.12) !important;
+}
+
+/* 카드 제목 */
+.text-2xl.font-bold.mb-6.text-center {
+  margin-bottom: 24px !important;
+  text-align: left !important;
+  font-size: 24px !important;
+  font-weight: 800 !important;
+  color: #2f2f2f !important;
+}
+
+/* 라벨들 */
+.block.mb-1.font-medium {
+  display: block !important;
+  margin-bottom: 8px !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  color: #2f2f2f !important;
+}
+
+/* 이미지 라벨 */
+.block.mb-2.text-lg.font-bold.text-center {
+  display: block !important;
+  margin-bottom: 10px !important;
+  text-align: left !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  color: #2f2f2f !important;
+}
+
+/* 이미지 박스 */
+.mt-4.w-full.h-64.border-2.border-gray-300.rounded-md.bg-gray-50.flex.items-center.justify-center {
+  margin-top: 0 !important;
+  margin-bottom: 18px !important;
+  width: 100% !important;
+  height: 240px !important;
+  border: 1.5px solid #f8c9d7 !important;
+  border-radius: 14px !important;
+  background: #fff !important;
+}
+
+/* 이미지 placeholder */
+.text-sm.text-gray-400 {
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: #9ca3af !important;
+}
+
+/* 값 박스 공통 */
+.w-full.border.p-2.rounded.bg-gray-100.h-10,
+.w-full.border.p-2.rounded.bg-gray-100.min-h-\[80px\] {
+  width: 100% !important;
+  border: 1.5px solid #f8c9d7 !important;
+  border-radius: 14px !important;
+  background: #fff !important;
+  padding: 13px 15px !important;
+  font-size: 14px !important;
+  color: #2f2f2f !important;
+  box-sizing: border-box !important;
+}
+
+/* 한 줄 값 박스 */
+.w-full.border.p-2.rounded.bg-gray-100.h-10 {
+  min-height: 48px !important;
+}
+
+/* 여러 줄 값 박스 */
+.w-full.border.p-2.rounded.bg-gray-100.min-h-\[80px\] {
+  min-height: 90px !important;
+}
+
+/* 상태 영역 */
+.flex.gap-4.justify-end {
+  margin-top: 6px !important;
+  display: flex !important;
+  justify-content: flex-end !important;
+  gap: 10px !important;
+  flex-wrap: wrap !important;
+}
+
+/* 상태 공통 pill */
+.flex.items-center.gap-2.px-3.py-1.rounded.font-medium {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 9px 14px !important;
+  border-radius: 999px !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+}
+
+/* 비활성 상태 */
+.bg-gray-100.text-gray-400 {
+  background: #f3f4f6 !important;
+  color: #9ca3af !important;
+}
+
+/* 신청 */
+.bg-orange-100.text-orange-600 {
+  background: #fff1e8 !important;
+  color: #f97316 !important;
+}
+
+/* 취소 */
+.bg-red-100.text-red-600 {
+  background: #ffe9e9 !important;
+  color: #ef4444 !important;
+}
+
+/* 완료 */
+.bg-green-100.text-green-600 {
+  background: #eafaf0 !important;
+  color: #16a34a !important;
+}
+
+/* 상태 점 */
+.w-2.h-2.rounded-full.bg-gray-400 {
+  background: #9ca3af !important;
+}
+
+.w-2.h-2.rounded-full.bg-orange-500 {
+  background: #f97316 !important;
+}
+
+.w-2.h-2.rounded-full.bg-red-500 {
+  background: #ef4444 !important;
+}
+
+.w-2.h-2.rounded-full.bg-green-500 {
+  background: #16a34a !important;
+}
+
+/* 하단 버튼 줄 */
+.flex.justify-center.gap-4.mt-6 {
+  display: flex !important;
+  justify-content: center !important;
+  gap: 12px !important;
+  margin-top: 28px !important;
+  flex-wrap: wrap !important;
+}
+
+/* 공통 버튼 */
+.px-6.bg-blue-500.text-white.p-2.rounded.hover\:bg-blue-600,
+.px-6.bg-gray-500.text-white.p-2.rounded.hover\:bg-gray-600 {
+  border: none !important;
+  border-radius: 14px !important;
+  padding: 13px 22px !important;
+  font-size: 15px !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
+
+/* 입양신청 */
+.px-6.bg-blue-500.text-white.p-2.rounded.hover\:bg-blue-600 {
+  background: #ff7aa2 !important;
+  color: #fff !important;
+  font-weight: 800 !important;
+  box-shadow: 0 8px 20px rgba(255, 122, 162, 0.22) !important;
+}
+
+.px-6.bg-blue-500.text-white.p-2.rounded.hover\:bg-blue-600:hover {
+  background: #ff5c8d !important;
+}
+
+/* 목록으로 */
+.px-6.bg-gray-500.text-white.p-2.rounded.hover\:bg-gray-600 {
+  background: #e5e7eb !important;
+  color: #4b5563 !important;
+  font-weight: 700 !important;
+}
+
+.px-6.bg-gray-500.text-white.p-2.rounded.hover\:bg-gray-600:hover {
+  background: #d1d5db !important;
+}

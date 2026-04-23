@@ -30,3 +30,7 @@ dist/
 *.sst
 
 ani_Back/bin/
+
+.next/
+node_modules/
+.env
