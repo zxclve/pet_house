@@ -1,13 +1,23 @@
 "use client";
 
 import "./registration.css";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import PageContainer from "../components/PageContainer";
 
 export default function AdoptPage() {
     const router = useRouter();
     const fileInputRef = useRef<HTMLInputElement>(null!);
+    const [previewImage, setPreviewImage] = useState<string>("");
+    
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const imageUrl = URL.createObjectURL(file);
+    setPreviewImage(imageUrl);
+    };
+
     return (
         <PageContainer
             title="분양 등록"
@@ -25,7 +35,15 @@ export default function AdoptPage() {
                         </label>
 
                         <div className="mt-4 w-full h-64 border-2 border-gray-300 rounded-md bg-gray-50 flex items-center justify-center">
-                            <span className="text-sm text-gray-400">이미지 업로드 영역</span>
+                            {previewImage ? (
+                                <img
+                                    src={previewImage}
+                                    alt="미리보기"
+                                    style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "12px" }}
+                                />
+                            ) : (
+                                <span className="text-sm text-gray-400">이미지 업로드 영역</span>
+                            )}
                         </div>
                         <div className="image-upload-row">
                             <input
@@ -33,6 +51,7 @@ export default function AdoptPage() {
                                 accept="image/*"
                                 ref={fileInputRef}
                                 style={{ display: "none" }}
+                                onChange={handleImageChange}
                             />
 
                             <button
