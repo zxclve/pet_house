@@ -51,7 +51,7 @@ public class PostService {
         // 이미지 처리 
         if (image != null && !image.isEmpty()) {
             String imageUrl = fileService.upload(image);
-            postSite.setImage_url(imageUrl);
+            postSite.setImageUrl(imageUrl);
         }
         // 저장
         return postRepository.save(postSite);
@@ -101,7 +101,7 @@ public class PostService {
         post.setColorFeatures(colorFeatures);
         post.setPrice(price);
         post.setHealthStatus(healthStatus);
-        post.setImage_url(image_url);
+        post.setImageUrl(image_url);
         post.setUpdatedAt(LocalDateTime.now()); //수정시간 갱신
 
         this.postRepository.save(post); //저장

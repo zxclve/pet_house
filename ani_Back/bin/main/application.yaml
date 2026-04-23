@@ -2,6 +2,13 @@ server:
   port: 8686
 
 spring:
+<<<<<<< HEAD
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3307/pet_house?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
+    username: pet_user
+    password: 1234
+=======
   application:
     name: animal
 
@@ -10,11 +17,17 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: root
+>>>>>>> b430d7e75ca27783e2c1ba8cb0e646135cbb3a60
 
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
+<<<<<<< HEAD
+    properties:
+      hibernate:
+        format_sql: true
+=======
     database-platform: org.hibernate.dialect.MySQL8Dialect
     open-in-view: false
     properties:
@@ -39,3 +52,4 @@ logging:
 
 file:
   path: ${user.dir}/uploads/image
+>>>>>>> b430d7e75ca27783e2c1ba8cb0e646135cbb3a60

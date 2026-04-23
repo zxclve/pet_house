@@ -1,0 +1,5 @@
+<<<<<<< HEAD
+self.__NEXT_FONT_MANIFEST="{\n  \"app\": {},\n  \"appUsingSizeAdjust\": false,\n  \"pages\": {},\n  \"pagesUsingSizeAdjust\": false\n}"
+=======
+self.__NEXT_FONT_MANIFEST="{\n  \"app\": {\n    \"[project]/app/adoption/page\": [\n      \"static/media/caa3a2e1cccd8315-s.p.16t1db8_9y2o~.woff2\",\n      \"static/media/797e433ab948586e-s.p.0.q-h669a_dqa.woff2\"\n    ],\n    \"[project]/app/page\": [\n      \"static/media/caa3a2e1cccd8315-s.p.16t1db8_9y2o~.woff2\",\n      \"static/media/797e433ab948586e-s.p.0.q-h669a_dqa.woff2\"\n    ]\n  },\n  \"appUsingSizeAdjust\": true,\n  \"pages\": {},\n  \"pagesUsingSizeAdjust\": false\n}"
+>>>>>>> b430d7e75ca27783e2c1ba8cb0e646135cbb3a60
