@@ -38,12 +38,6 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 
         String path = req.getRequestURI();
 
-        // 🔥 로그인 / 회원가입 제외
-        if (path.startsWith("/user/login") || path.startsWith("/user/signup")) {
-            chain.doFilter(request, response);
-            return;
-        }
-
         String token = jwtTokenProvider.resolveToken(req);
 
         if (token != null && jwtTokenProvider.validateToken(token)) {
