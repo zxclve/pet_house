@@ -11,7 +11,9 @@ export const fetchContracts = async (params: ContractSearchParams) => {
   if (params.contractId) query.append("contractId", String(params.contractId));
   query.append("status", params.status);
 
-  const res = await fetch(`/api/contracts?${query.toString()}`);
+  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+  const headers: HeadersInit = token ? { Authorization: `Bearer ${token}` } : {};
+  const res = await fetch(`/api/contracts?${query.toString()}`, { headers });
 
   if (!res.ok) {
     throw new Error("API Error");

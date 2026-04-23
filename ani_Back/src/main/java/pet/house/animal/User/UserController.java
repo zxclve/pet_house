@@ -40,8 +40,21 @@ public class UserController {
             response.put("message", "회원가입이 완료되었습니다.");
             return ResponseEntity.ok(response);
         } catch (DataIntegrityViolationException e) {
-            response.put("message", "이미 등록된 사용자 아이디 또는 이메일입니다.");
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+            String detail = e.getMostSpecificCause() != null
+                    ? e.getMostSpecificCause().getMessage()
+                    : "";
+
+            boolean duplicateViolation = detail.contains("Unique index")
+                    || detail.contains("duplicate")
+                    || detail.contains("UK");
+
+            if (duplicateViolation) {
+                response.put("message", "이미 등록된 사용자 아이디 또는 이메일입니다.");
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+            }
+
+            response.put("message", "회원가입 입력값 오류가 발생했습니다. 입력값을 확인해주세요.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         } catch (Exception e) {
             response.put("message", "회원가입 중 오류가 발생했습니다.");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);

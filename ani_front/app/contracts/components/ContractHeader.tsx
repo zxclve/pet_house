@@ -1,4 +1,4 @@
-import { PostHeader } from "@/types/contract";
+import { PostHeader } from "../types/contract";
 
 export default function ContractHeader({ post }: { post: PostHeader }) {
   return (

@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { fetchContracts } from "@/services/contractsApi";
-import ContractHeader from "@/components/contracts/ContractHeader";
-import ContractSearch from "@/components/contracts/ContractSearch";
-import ContractTable from "@/components/contracts/ContractTable";
-import { PostContractResponse } from "@/types/contract";
+import { fetchContracts } from "./types/contractsApi";
+import ContractHeader from "./components/ContractHeader";
+import ContractSearch from "./components/ContractSearch";
+import ContractTable from "./components/contracts/ContractTable";
+import { PostContractResponse } from "./types/contract";
 
 export default function ContractsPage() {
   const [data, setData] = useState<PostContractResponse | null>(null);
