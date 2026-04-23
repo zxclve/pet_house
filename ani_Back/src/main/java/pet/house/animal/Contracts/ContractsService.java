@@ -1,121 +1,103 @@
 package pet.house.animal.Contracts;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
-import pet.house.animal.Post.PostStatus;
-import pet.house.animal.Post.PostService;
-import pet.house.animal.Post.PostSite;
-import pet.house.animal.User.UserEntity;
-import pet.house.animal.User.UserRepository;
-import pet.house.animal.User.UserType;
 
-@Service // 서비스 컴포넌트 
-@RequiredArgsConstructor // 이거 final 필드에 자동으로 인젝션할려고 사용(의존성 주입)
+@Service
+@RequiredArgsConstructor
 public class ContractsService {
-    private final ContractsRepository contractsRepository; //계약 DB 접근
-    private final UserRepository userRepository; //유저 DB 접근
-    private final PostService postService; //게시글 상태 변경용 서비스
 
-    //전체 계약 목록 조회(쓰기X, 읽기용)
-    @Transactional(readOnly = true) //쓰기X
-    public List<Contracts> getList() {
-        return contractsRepository.findAll(); // 전체 조회
+    private final ContractsRepository contractsRepository;
+    private final ContractsMapper contractsMapper;
+
+    public PostContractResponse getContracts(String type, Long contractId, String status) {
+
+        // 1️⃣ 프로시저 호출
+        List<Object[]> rows =
+                contractsRepository.callContractsProc(type, contractId, status);
+
+        // 2️⃣ Object[] → DTO 변환
+        List<ContractFlatDTO> dtoList = rows.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+
+        // 3️⃣ Mapper 호출
+        return contractsMapper.toResponse(dtoList);
     }
-    //분양 신청 
-    @Transactional //트랜잭션 (중간 실패시 롤백)
+
+    // 🔥 핵심 변환 로직
+    private ContractFlatDTO convertToDTO(Object[] row) {
+
+        ContractFlatDTO dto = new ContractFlatDTO();
+
+        int i = 0;
+
+        dto.setContractId(((Number) row[i++]).longValue());
+        dto.setAdoptionAppDate((LocalDate) row[i++]);
+        dto.setContractStatus((String) row[i++]);
+        dto.setConfirmedAdopteeFlag((String) row[i++]);
+        dto.setContractDate((LocalDate) row[i++]);
+        dto.setDeliveryMethod((String) row[i++]);
+        dto.setAdoptionFee((BigDecimal) row[i++]);
+        dto.setCommissionFee((BigDecimal) row[i++]);
+        dto.setTotalAmount((BigDecimal) row[i++]);
+        dto.setContractCreatedAt((LocalDateTime) row[i++]);
+        dto.setContractUpdatedAt((LocalDateTime) row[i++]);
+
+        dto.setBuyerId(((Number) row[i++]).longValue());
+        dto.setBuyerUsername((String) row[i++]);
+        dto.setBuyerAddress1((String) row[i++]);
+        dto.setBuyerAddress2((String) row[i++]);
+        dto.setBuyerUserType((String) row[i++]);
+        dto.setBuyerEmail((String) row[i++]);
+        dto.setBuyerPhoneNumber((String) row[i++]);
+        dto.setCategoryName((String) row[i++]);
+
+        dto.setPostId(((Number) row[i++]).longValue());
+        dto.setBreed((String) row[i++]);
+        dto.setGender((String) row[i++]);
+        dto.setBirthDate((LocalDate) row[i++]);
+        dto.setColorFeatures((String) row[i++]);
+        dto.setPrice((BigDecimal) row[i++]);
+        dto.setHealthStatus((String) row[i++]);
+        dto.setAdoptionStatus((String) row[i++]);
+        dto.setImageUrl((String) row[i++]);
+        dto.setPostsCreatedAt((LocalDateTime) row[i++]);
+        dto.setPostsUpdatedAt((LocalDateTime) row[i++]);
+
+        dto.setSellerId(((Number) row[i++]).longValue());
+        dto.setSellerUsername((String) row[i++]);
+        dto.setSellerAddress1((String) row[i++]);
+        dto.setSellerAddress2((String) row[i++]);
+        dto.setSellerUserType((String) row[i++]);
+        dto.setSellerEmail((String) row[i++]);
+        dto.setSellerPhoneNumber((String) row[i++]);
+
+        return dto;
+    }
+
     public void apply(Long postId, String loginId) {
-        //로그인 ID로 사용자 조회
-        UserEntity buyer = userRepository.findByLoginid(loginId)
-                .orElseThrow(() -> new RuntimeException("유저를 찾을 수 없습니다."));
-        //게시글 조회
-        PostSite post = postService.getPost(postId);
-        //이미 신청했는지 체크(중복 신청 방지)
-        contractsRepository.findByPost_PostIdAndBuyer_Userid(postId, buyer.getUserid())
-                .ifPresent(c -> { throw new RuntimeException("이미 신청한 게시글입니다."); });
-        //계약 엔티티 생성 
-        Contracts contracts = Contracts.builder()
-                .post(post) //어떤 게시글
-                .buyer(buyer) //신청한 사용자
-                .adoption_app_date(LocalDate.now()) //신청날짜
-                .status(ContractsStatus.A) //신청상태
-                .contract_date(LocalDate.now()) //계약 날짜
-                .deliveryMethod(Contracts_Delivery.DIRECT) //전달방식(기본값은 직접전달)
-                .createdAt(LocalDateTime.now()) //생성시간
-                .updatedAt(LocalDateTime.now()) //수정시간
-                .build();
-
-        contractsRepository.save(contracts); //DB저장
-
-        // 게시글 상태도 같이 반영(신청)
-        postService.updateStatus(postId, PostStatus.A);
+        // TODO: 계약 신청 로직
     }
 
-    //신청 취소
-    @Transactional
     public void cancel(Long postId, String loginId) {
-        //사용자 조회
-        UserEntity buyer = userRepository.findByLoginid(loginId)
-                .orElseThrow(() -> new RuntimeException("유저를 찾을 수 없습니다."));
-        //해당 게시글 + 사용자 계약 조회
-        Contracts contracts = contractsRepository.findByPost_PostIdAndBuyer_Userid(postId, buyer.getUserid())
-                .orElseThrow(() -> new RuntimeException("신청 내역이 없습니다."));
-
-        contracts.setStatus(ContractsStatus.C); //상태값을 C(취소) 로 변경
-        contracts.setUpdatedAt(LocalDateTime.now()); //수정시간 업데이트
-        contractsRepository.save(contracts); //DB저장
-
-        // 게시글 상태도 같이 반영(취소)
-        postService.updateStatus(postId, PostStatus.C); //게시글 상태도 취소로 변경
+        // TODO: 계약 취소 로직
     }
 
-    //관리자: 분양 완료 처리
-    @Transactional
     public void completeByAdmin(Long postId, String adminLoginId) {
-        //관리자 사용자 조회
-        UserEntity admin = userRepository.findByLoginid(adminLoginId)
-                .orElseThrow(() -> new RuntimeException("유저를 찾을 수 없습니다."));
-        //관리자 권한 체크
-        if (admin.getUsertype() != UserType.A) {
-            throw new RuntimeException("관리자만 완료 처리를 할 수 있습니다.");
-        }
-        //해당 게시글에서 가장 최근 ACTIVE 계약 조회
-        Contracts contracts = contractsRepository
-                .findTopByPost_PostIdAndStatusOrderByCreatedAtDesc(postId, ContractsStatus.A)
-                .orElseThrow(() -> new RuntimeException("완료 처리할 신청(ACTIVE) 계약서가 없습니다."));
-
-        contracts.setStatus(ContractsStatus.Y); // 상태를 완료(Y)로 변경
-        contracts.setUpdatedAt(LocalDateTime.now());
-        contractsRepository.save(contracts);
-
-        // 게시글 상태도 같이 반영(완료)
-        postService.updateStatus(postId, PostStatus.Y);
+        // TODO: 관리자 완료 처리
     }
-    // 관리자: 신청 취소 처리
-    @Transactional
+
     public void cancelByAdmin(Long postId, String adminLoginId) {
-
-        // 관리자 조회
-        UserEntity admin = userRepository.findByLoginid(adminLoginId)
-                .orElseThrow(() -> new RuntimeException("유저를 찾을 수 없습니다."));
-        // 관리자 권한 체크
-        if (admin.getUsertype() != UserType.A) {
-            throw new RuntimeException("관리자만 취소 처리를 할 수 있습니다.");
-        }
-        // 가장 최근 ACTIVE 계약 조회
-        Contracts contracts = contractsRepository
-                .findTopByPost_PostIdAndStatusOrderByCreatedAtDesc(postId, ContractsStatus.A)
-                .orElseThrow(() -> new RuntimeException("취소 처리할 신청(ACTIVE) 계약서가 없습니다."));
-
-        contracts.setStatus(ContractsStatus.C); // 상태를 취소(C)로 변경
-        contracts.setUpdatedAt(LocalDateTime.now());
-        contractsRepository.save(contracts);
-
-        postService.updateStatus(postId, PostStatus.C); // 게시글 상태도 취소로 변경
+        // TODO: 관리자 취소 처리
     }
+
+    
 }

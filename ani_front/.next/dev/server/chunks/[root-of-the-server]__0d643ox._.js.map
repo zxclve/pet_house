@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 46, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/HKIT/Desktop/%EC%84%B1%EA%B8%B0%EC%9B%90/pethouse%20v.0.1/pet_house/ani_front/app/api/contracts/route.ts"],"sourcesContent":["import { NextResponse } from \"next/server\";\r\n\r\nexport async function GET(req: Request) {\r\n  const { searchParams } = new URL(req.url);\r\n\r\n  const res = await fetch(\r\n    `http://localhost:8080/api/contracts?${searchParams.toString()}`\r\n  );\r\n\r\n  const data = await res.json();\r\n\r\n  return NextResponse.json(data);\r\n}"],"names":["GET","req","searchParams","URL","url","res","fetch","toString","data","json"],"mappings":";;;;AAAA;;AAEO,eAAeA,IAAIC,GAAY;IACpC,MAAM,EAAEC,YAAY,EAAE,GAAG,IAAIC,IAAIF,IAAIG,GAAG;IAExC,MAAMC,MAAM,MAAMC,MAChB,CAAC,oCAAoC,EAAEJ,aAAaK,QAAQ,IAAI;IAGlE,MAAMC,OAAO,MAAMH,IAAII,IAAI;IAE3B,OAAO,qOAAY,CAACA,IAAI,CAACD;AAC3B"}}]
+}

@@ -33,6 +33,7 @@ import pet.house.animal.User.UserEntity;
 @AllArgsConstructor
 @Builder
 public class PostSite {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "post_id", nullable = false)
@@ -49,40 +50,36 @@ public class PostSite {
     private UserEntity seller;
 
     @Column(nullable = false, length = 50)
-    private String breed; //품종
+    private String breed;
 
     @Column(nullable = false, length = 1, columnDefinition = "CHAR(1) DEFAULT 'M'")
-    private String gender; // 동물 "M" or "F"
+    private String gender;
 
     @Column(name = "birth_date", nullable = false)
-    private LocalDate birthDate; //동물생년월일
+    private LocalDate birthDate;
 
     @Column(name = "color_features", nullable = false, columnDefinition = "TEXT")
-    private String colorFeatures; //동물 특징
+    private String colorFeatures;
 
     @Builder.Default
     @Column(precision = 10, scale = 2, nullable = false, columnDefinition = "DECIMAL(10,2) DEFAULT 0.00")
-    private BigDecimal price = BigDecimal.ZERO; //가격
+    private BigDecimal price = BigDecimal.ZERO;
 
     @Column(name = "health_status", columnDefinition = "TEXT")
-    private String healthStatus; //건강
+    private String healthStatus;
 
-    // ENUM 매핑
     @Enumerated(EnumType.STRING)
     @Builder.Default
     @Column(name = "status", nullable = false, columnDefinition = "CHAR(1) DEFAULT 'A'")
-    private PostStatus status = PostStatus.A; 
-    //게시글 상태, enum으로 관리 (A: Active, S: Sold, D: Deleted) 기본값 A 
+    private PostStatus status = PostStatus.A;
 
-    //사진 경로
-    @Column(name = "image_url", nullable = true, length = 255)
-    private String image_url;
+    @Column(name = "image_url", length = 255)
+    private String imageUrl;
 
     @Column(name = "created_at", updatable = false,
             columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
-    private LocalDateTime createdAt; //게시글 생성 시간 
+    private LocalDateTime createdAt;
 
-    //수정 시간
     @Column(name = "updated_at",
             columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     private LocalDateTime updatedAt;

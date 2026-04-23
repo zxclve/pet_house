@@ -1,4 +1,8 @@
 {
+<<<<<<< HEAD
+  "app": {},
+  "appUsingSizeAdjust": false,
+=======
   "app": {
     "[project]/app/adoption/page": [
       "static/media/caa3a2e1cccd8315-s.p.16t1db8_9y2o~.woff2",
@@ -10,6 +14,7 @@
     ]
   },
   "appUsingSizeAdjust": true,
+>>>>>>> b430d7e75ca27783e2c1ba8cb0e646135cbb3a60
   "pages": {},
   "pagesUsingSizeAdjust": false
 }
