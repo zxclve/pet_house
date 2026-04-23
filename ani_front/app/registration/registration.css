@@ -1,0 +1,179 @@
+/* 전체 컨테이너 */
+.w-\[90\%\].max-w-3xl.mx-auto.p-6 {
+  max-width: 720px !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+}
+
+/* 카드 */
+.space-y-4.border-2.border-red-300.p-6.rounded-lg.shadow {
+  border: 1px solid #f6dbe4 !important;
+  border-radius: 24px !important;
+  background: #ffffff !important;
+  padding: 32px 24px !important;
+  box-shadow: 0 12px 30px rgba(255, 122, 162, 0.12) !important;
+}
+
+/* 제목 */
+.text-2xl.font-bold.mb-6.text-center {
+  font-size: 24px !important;
+  font-weight: 800 !important;
+  color: #2f2f2f !important;
+  text-align: left !important;
+  margin-bottom: 24px !important;
+}
+
+/* 각 항목 공통 */
+.space-y-4.border-2.border-red-300.p-6.rounded-lg.shadow > div {
+  margin-bottom: 18px !important;
+}
+
+/* 라벨 */
+.block.mb-1.font-medium {
+  display: block !important;
+  margin-bottom: 8px !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  color: #2f2f2f !important;
+}
+
+/* 이미지 제목 */
+.block.mb-2.text-lg.font-bold.text-center {
+  display: block !important;
+  margin-bottom: 10px !important;
+  text-align: left !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  color: #2f2f2f !important;
+}
+
+/* 이미지 영역 크게 */
+.mt-4.w-full.h-64.border-2.border-gray-300.rounded-md.bg-gray-50.flex.items-center.justify-center {
+  width: 100% !important;
+  height: 320px !important;
+  margin-top: 0 !important;
+  border: 1.5px solid #f8c9d7 !important;
+  border-radius: 16px !important;
+  background: linear-gradient(180deg, #fff7fa 0%, #fffdfd 100%) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* 이미지 안내문구 */
+.text-sm.text-gray-400 {
+  font-size: 14px !important;
+  color: #9ca3af !important;
+  font-weight: 600 !important;
+}
+
+/* input 공통 */
+.w-full.border.p-2.rounded.bg-white.h-10 {
+  display: block !important;
+  width: 100% !important;
+  min-height: 48px !important;
+  border: 1.5px solid #f8c9d7 !important;
+  border-radius: 14px !important;
+  background: #fff !important;
+  padding: 13px 15px !important;
+  font-size: 14px !important;
+  color: #2f2f2f !important;
+  outline: none !important;
+  box-sizing: border-box !important;
+}
+
+.w-full.border.p-2.rounded.bg-white.h-10:focus {
+  border-color: #ff7aa2 !important;
+  box-shadow: 0 0 0 4px rgba(255, 122, 162, 0.15) !important;
+}
+
+/* textarea */
+.w-full.border.p-2.rounded.bg-white.min-h-\[80px\] {
+  display: block !important;
+  width: 100% !important;
+  min-height: 110px !important;
+  border: 1.5px solid #f8c9d7 !important;
+  border-radius: 14px !important;
+  background: #fff !important;
+  padding: 13px 15px !important;
+  font-size: 14px !important;
+  color: #2f2f2f !important;
+  outline: none !important;
+  box-sizing: border-box !important;
+  resize: vertical !important;
+}
+
+.w-full.border.p-2.rounded.bg-white.min-h-\[80px\]:focus {
+  border-color: #ff7aa2 !important;
+  box-shadow: 0 0 0 4px rgba(255, 122, 162, 0.15) !important;
+}
+
+/* placeholder */
+.w-full.border.p-2.rounded.bg-white.h-10::placeholder,
+.w-full.border.p-2.rounded.bg-white.min-h-\[80px\]::placeholder {
+  color: #9ca3af !important;
+}
+
+/* 버튼 영역 */
+.flex.justify-center.gap-4.mt-6 {
+  display: flex !important;
+  justify-content: center !important;
+  gap: 12px !important;
+  margin-top: 28px !important;
+  flex-wrap: wrap !important;
+}
+
+/* 등록 버튼 */
+.bg-blue-500 {
+  background: #ff7aa2 !important;
+  color: #fff !important;
+  font-weight: 800 !important;
+  border-radius: 14px !important;
+  padding: 12px 22px !important;
+  box-shadow: 0 8px 20px rgba(255, 122, 162, 0.22) !important;
+  border: none !important;
+}
+
+.bg-blue-500:hover {
+  background: #ff5c8d !important;
+}
+
+/* 목록 버튼 */
+.bg-gray-500 {
+  background: #e5e7eb !important;
+  color: #4b5563 !important;
+  font-weight: 700 !important;
+  border-radius: 14px !important;
+  padding: 12px 22px !important;
+  border: none !important;
+}
+
+.bg-gray-500:hover {
+  background: #d1d5db !important;
+}
+
+/* ===== 이미지 업로드 버튼용 ===== */
+.image-upload-btn {
+  margin-top: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 16px;
+  background: #ffe4ec;
+  color: #ff5c8d;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.image-upload-btn:hover {
+  background: #ffd3e1;
+}
+
+.image-upload-row {
+  display: flex;
+  justify-content: flex-end;
+}

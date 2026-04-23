@@ -3,6 +3,9 @@
 // 페이지 이동 기능을 사용하기 위한 임포트
 import { useRouter } from "next/navigation";
 
+import "./adoption.css";
+import PageContainer from "../components/PageContainer";
+
 export default function AdoptionDetailPage() {
   
   // 페이지 이동 기능
@@ -17,6 +20,7 @@ export default function AdoptionDetailPage() {
   ];
 
   return (
+    <PageContainer title="분양 상세정보" >
     <div className="w-[90%] max-w-3xl mx-auto p-6">
       <h1 className="text-2xl font-bold mb-6 text-center">
         반려동물 분양 상세정보
@@ -108,7 +112,10 @@ export default function AdoptionDetailPage() {
       {/* 하단 버튼 */}
       <div className="flex justify-center gap-4 mt-6">
         <button
-          type="button" onClick={() => router.push("/adoption/contract")} 
+          type="button" onClick={() => {
+            alert("신청 완료되었습니다.");
+            router.push("/");
+          }}
           className="px-6 bg-blue-500 text-white p-2 rounded hover:bg-blue-600">입양신청</button>
 
         <button
@@ -116,5 +123,6 @@ export default function AdoptionDetailPage() {
           className="px-6 bg-gray-500 text-white p-2 rounded hover:bg-gray-600">목록으로</button>
       </div>
     </div>
+    </PageContainer>
   );
 }

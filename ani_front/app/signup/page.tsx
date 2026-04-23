@@ -1,5 +1,7 @@
 "use client";
 
+import "./signup.css";
+import PageContainer from "../components/PageContainer";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -85,86 +87,165 @@ export default function SignupPage() {
     }
 
     return (
-        <div>
-            <div className="my-3 border-bottom">
-                <h4>회원가입</h4>
-            </div>
+<PageContainer title="회원가입">
+  <div className="page-shell">
+    <div className="page-card">
+      <div className="my-3 border-bottom">
+        <div className="auth-badge">PET HOUSE</div>
+        <h4>회원가입</h4>
+      </div>
 
-            {errors.global && <div className="alert alert-danger">{errors.global}</div>}
+      {errors.global && (
+        <div className="alert alert-danger">{errors.global}</div>
+      )}
 
-            <form onSubmit={handleSubmit}>
-                <div className="mb-3">
-                    <label className="form-label">로그인 ID</label>
-                    <input type="text" name="loginid" className={`form-control ${errors.loginid ? "is-invalid" : ""}`}
-                        placeholder="사용할 아이디를 입력하세요" onChange={handleChange} />
-                    {errors.loginid && <div className="invalid-feedback">{errors.loginid}</div>}
-                </div>
-
-                <div className="mb-3">
-                    <label className="form-label">사용자 이름</label>
-                    <input type="text" name="username" className={`form-control ${errors.username ? "is-invalid" : ""}`}
-                        placeholder="홍길동" onChange={handleChange} />
-                    {errors.username && <div className="invalid-feedback">{errors.username}</div>}
-                </div>
-
-                <div className="mb-3">
-                    <label className="form-label">비밀번호</label>
-                    <input type="password" name="password" className={`form-control ${errors.password ? "is-invalid" : ""}`}
-                        onChange={handleChange} />
-                    {errors.password && <div className="invalid-feedback">{errors.password}</div>}
-                </div>
-
-                <div className="mb-3">
-                    <label className="form-label">비밀번호 확인</label>
-                    <input type="password" name="passwordConfirm" className={`form-control ${errors.passwordConfirm ? "is-invalid" : ""}`}
-                        onChange={handleChange} />
-                    {errors.passwordConfirm && <div className="invalid-feedback">{errors.passwordConfirm}</div>}
-                </div>
-
-                <div className="mb-3">
-                    <label className="form-label">이메일</label>
-                    <input type="email" name="email" className={`form-control ${errors.email ? "is-invalid" : ""}`}
-                        placeholder="example@email.com" onChange={handleChange} />
-                    {errors.email && <div className="invalid-feedback">{errors.email}</div>}
-                </div>
-
-                <div className="mb-3">
-                    <label className="form-label">전화번호</label>
-                    <input type="text" name="phonenum" className={`form-control ${errors.phonenum ? "is-invalid" : ""}`}
-                        placeholder="010-0000-0000" onChange={handleChange} />
-                    {errors.phonenum && <div className="invalid-feedback">{errors.phonenum}</div>}
-                </div>
-
-                <div className="mb-3">
-                    <label className="form-label d-block">회원 유형</label>
-                    <div className="form-check form-check-inline">
-                        <input className="form-check-input" type="radio"
-                            name="usertype" value="I" defaultChecked onChange={handleChange} />
-                        <label className="form-check-label">개인</label>
-                    </div>
-                    <div className="form-check form-check-inline">
-                        <input className="form-check-input" type="radio"
-                            name="usertype" value="B" onChange={handleChange} />
-                        <label className="form-check-label">사업자</label>
-                    </div>
-                    {errors.usertype && <div className="text-danger small">{errors.usertype}</div>}
-                </div>
-
-                <div className="mb-3">
-                    <label className="form-label">주소</label>
-                    <input type="text" name="address1" className={`form-control ${errors.address1 ? "is-invalid" : ""}`}
-                        placeholder="기본 주소를 입력하세요" onChange={handleChange} />
-                    {errors.address1 && <div className="invalid-feedback">{errors.address1}</div>}
-                </div>
-
-                <div className="mb-3">
-                    <label className="form-label">상세 주소</label>
-                    <input type="text" name="address2" className="form-control"
-                        placeholder="상세 주소를 입력하세요" onChange={handleChange} />
-                </div>
-
-                <button type="submit" className="btn btn-primary">회원 가입</button>
-            </form>
+      <form onSubmit={handleSubmit} className="signup-form">
+        <div className="mb-3">
+          <label className="form-label">로그인 ID</label>
+          <input
+            type="text"
+            name="loginid"
+            className={`form-control ${errors.loginid ? "is-invalid" : ""}`}
+            placeholder="사용할 아이디를 입력하세요"
+            onChange={handleChange}
+          />
+          {errors.loginid && (
+            <div className="invalid-feedback">{errors.loginid}</div>
+          )}
         </div>
-    );
+
+        <div className="mb-3">
+          <label className="form-label">사용자 이름</label>
+          <input
+            type="text"
+            name="username"
+            className={`form-control ${errors.username ? "is-invalid" : ""}`}
+            placeholder="이름을 입력하세요"
+            onChange={handleChange}
+          />
+          {errors.username && (
+            <div className="invalid-feedback">{errors.username}</div>
+          )}
+        </div>
+
+        <div className="mb-3">
+          <label className="form-label">비밀번호</label>
+          <input
+            type="password"
+            name="password"
+            className={`form-control ${errors.password ? "is-invalid" : ""}`}
+            placeholder="비밀번호를 입력하세요"
+            onChange={handleChange}
+          />
+          {errors.password && (
+            <div className="invalid-feedback">{errors.password}</div>
+          )}
+        </div>
+
+        <div className="mb-3">
+          <label className="form-label">비밀번호 확인</label>
+          <input
+            type="password"
+            name="passwordConfirm"
+            className={`form-control ${errors.passwordConfirm ? "is-invalid" : ""}`}
+            placeholder="비밀번호를 다시 입력하세요"
+            onChange={handleChange}
+          />
+          {errors.passwordConfirm && (
+            <div className="invalid-feedback">{errors.passwordConfirm}</div>
+          )}
+        </div>
+
+        <div className="mb-3">
+          <label className="form-label">이메일</label>
+          <input
+            type="email"
+            name="email"
+            className={`form-control ${errors.email ? "is-invalid" : ""}`}
+            placeholder="example@email.com"
+            onChange={handleChange}
+          />
+          {errors.email && (
+            <div className="invalid-feedback">{errors.email}</div>
+          )}
+        </div>
+
+        <div className="mb-3">
+          <label className="form-label">전화번호</label>
+          <input
+            type="text"
+            name="phonenum"
+            className={`form-control ${errors.phonenum ? "is-invalid" : ""}`}
+            placeholder="010-0000-0000"
+            onChange={handleChange}
+          />
+          {errors.phonenum && (
+            <div className="invalid-feedback">{errors.phonenum}</div>
+          )}
+        </div>
+
+        <div className="mb-3">
+          <label className="form-label d-block">회원 유형</label>
+
+          <div className="form-check form-check-inline">
+            <input
+              className="form-check-input"
+              type="radio"
+              name="usertype"
+              value="I"
+              defaultChecked
+              onChange={handleChange}
+            />
+            <label className="form-check-label">개인</label>
+          </div>
+
+          <div className="form-check form-check-inline">
+            <input
+              className="form-check-input"
+              type="radio"
+              name="usertype"
+              value="B"
+              onChange={handleChange}
+            />
+            <label className="form-check-label">사업자</label>
+          </div>
+
+          {errors.usertype && (
+            <div className="text-danger small">{errors.usertype}</div>
+          )}
+        </div>
+
+        <div className="mb-3">
+          <label className="form-label">주소</label>
+          <input
+            type="text"
+            name="address1"
+            className={`form-control ${errors.address1 ? "is-invalid" : ""}`}
+            placeholder="기본 주소를 입력하세요"
+            onChange={handleChange}
+          />
+          {errors.address1 && (
+            <div className="invalid-feedback">{errors.address1}</div>
+          )}
+        </div>
+
+        <div className="mb-3">
+          <label className="form-label">상세 주소</label>
+          <input
+            type="text"
+            name="address2"
+            className="form-control"
+            placeholder="상세 주소를 입력하세요"
+            onChange={handleChange}
+          />
+        </div>
+
+        <button type="submit" className="btn btn-primary">
+          회원 가입
+        </button>
+      </form>
+    </div>
+  </div>
+  </PageContainer>
+);
 }
