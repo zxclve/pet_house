@@ -17,15 +17,41 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 
     private final JwtTokenProvider jwtTokenProvider;
 
+    // @Override
+    // public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+    //     String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
+
+    //     if (token != null && jwtTokenProvider.validateToken(token)) {
+    //         Authentication authentication = jwtTokenProvider.getAuthentication(token);
+    //         SecurityContextHolder.getContext().setAuthentication(authentication);
+    //     }
+        
+    //     chain.doFilter(request, response);
+    // }
+
+
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+        throws IOException, ServletException {
+
+        HttpServletRequest req = (HttpServletRequest) request;
+
+        String path = req.getRequestURI();
+
+        // 🔥 로그인 / 회원가입 제외
+        if (path.startsWith("/user/login") || path.startsWith("/user/signup")) {
+            chain.doFilter(request, response);
+            return;
+        }
+
+        String token = jwtTokenProvider.resolveToken(req);
 
         if (token != null && jwtTokenProvider.validateToken(token)) {
             Authentication authentication = jwtTokenProvider.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
-        
+
         chain.doFilter(request, response);
     }
+    
 }
