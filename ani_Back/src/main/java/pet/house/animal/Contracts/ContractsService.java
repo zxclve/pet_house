@@ -3,6 +3,7 @@ package pet.house.animal.Contracts;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,87 +18,202 @@ public class ContractsService {
     private final ContractsRepository contractsRepository;
     private final ContractsMapper contractsMapper;
 
-    public PostContractResponse getContracts(String type, Long contractId, String status) {
+    public PostContractResponse getContracts(String type, Long postId, Long contractId, String status) {
 
-        // 1️⃣ 프로시저 호출
         List<Object[]> rows =
-                contractsRepository.callContractsProc(type, contractId, status);
+                contractsRepository.callContractsProc(type, postId, contractId, status);
 
-        // 2️⃣ Object[] → DTO 변환
+        if (rows == null || rows.isEmpty()) {
+            return new PostContractResponse();
+        }
+
         List<ContractFlatDTO> dtoList = rows.stream()
+                .filter(r -> r != null)
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
 
-        // 3️⃣ Mapper 호출
         return contractsMapper.toResponse(dtoList);
     }
 
-    // 🔥 핵심 변환 로직
     private ContractFlatDTO convertToDTO(Object[] row) {
 
-        ContractFlatDTO dto = new ContractFlatDTO();
+        System.out.println("ROW = " + java.util.Arrays.toString(row));
 
+        if (row == null) return null;
+
+        ContractFlatDTO dto = new ContractFlatDTO();
         int i = 0;
 
-        dto.setContractId(((Number) row[i++]).longValue());
-        dto.setAdoptionAppDate((LocalDate) row[i++]);
-        dto.setContractStatus((String) row[i++]);
-        dto.setConfirmedAdopteeFlag((String) row[i++]);
-        dto.setContractDate((LocalDate) row[i++]);
-        dto.setDeliveryMethod((String) row[i++]);
-        dto.setAdoptionFee((BigDecimal) row[i++]);
-        dto.setCommissionFee((BigDecimal) row[i++]);
-        dto.setTotalAmount((BigDecimal) row[i++]);
-        dto.setContractCreatedAt((LocalDateTime) row[i++]);
-        dto.setContractUpdatedAt((LocalDateTime) row[i++]);
+        dto.setContractId(toLongSafe(row[i++]));
+        dto.setAdoptionAppDate(toLocalDateSafe(row[i++]));
+        dto.setContractStatus(toString(row[i++]));
+        dto.setConfirmedAdopteeFlag(toString(row[i++]));
+        dto.setContractDate(toLocalDateSafe(row[i++]));
+        dto.setDeliveryMethod(toString(row[i++]));
+        dto.setAdoptionFee(toBigDecimal(row[i++]));
+        dto.setCommissionFee(toBigDecimal(row[i++]));
+        dto.setTotalAmount(toBigDecimal(row[i++]));
+        dto.setContractCreatedAt(toLocalDateTimeSafe(row[i++]));
+        dto.setContractUpdatedAt(toLocalDateTimeSafe(row[i++]));
 
-        dto.setBuyerId(((Number) row[i++]).longValue());
-        dto.setBuyerUsername((String) row[i++]);
-        dto.setBuyerAddress1((String) row[i++]);
-        dto.setBuyerAddress2((String) row[i++]);
-        dto.setBuyerUserType((String) row[i++]);
-        dto.setBuyerEmail((String) row[i++]);
-        dto.setBuyerPhoneNumber((String) row[i++]);
-        dto.setCategoryName((String) row[i++]);
+        dto.setBuyerId(toLongSafe(row[i++]));
+        dto.setBuyerUsername(toString(row[i++]));
+        dto.setBuyerAddress1(toString(row[i++]));
+        dto.setBuyerAddress2(toString(row[i++]));
+        dto.setBuyerUserType(toString(row[i++]));
+        dto.setBuyerEmail(toString(row[i++]));
+        dto.setBuyerPhoneNumber(toString(row[i++]));
+        dto.setCategoryName(toString(row[i++]));
 
-        dto.setPostId(((Number) row[i++]).longValue());
-        dto.setBreed((String) row[i++]);
-        dto.setGender((String) row[i++]);
-        dto.setBirthDate((LocalDate) row[i++]);
-        dto.setColorFeatures((String) row[i++]);
-        dto.setPrice((BigDecimal) row[i++]);
-        dto.setHealthStatus((String) row[i++]);
-        dto.setAdoptionStatus((String) row[i++]);
-        dto.setImageUrl((String) row[i++]);
-        dto.setPostsCreatedAt((LocalDateTime) row[i++]);
-        dto.setPostsUpdatedAt((LocalDateTime) row[i++]);
+        // dto.setPostId(toLongSafe(row[i++]));
+        // dto.setBreed(toString(row[i++]));
+        // dto.setGender(toString(row[i++]));
+        // dto.setBirthDate(toLocalDateSafe(row[i++]));
+        // dto.setColorFeatures(toString(row[i++]));
+        // dto.setPrice(toBigDecimal(row[i++]));
+        // dto.setHealthStatus(toString(row[i++]));
+        // dto.setAdoptionStatus(toString(row[i++]));
+        // dto.setImageUrl(toString(row[i++]));
 
-        dto.setSellerId(((Number) row[i++]).longValue());
-        dto.setSellerUsername((String) row[i++]);
-        dto.setSellerAddress1((String) row[i++]);
-        dto.setSellerAddress2((String) row[i++]);
-        dto.setSellerUserType((String) row[i++]);
-        dto.setSellerEmail((String) row[i++]);
-        dto.setSellerPhoneNumber((String) row[i++]);
+        dto.setPostId(toLongSafe(row[i++]));
+        dto.setBreed(toString(row[i++]));
+        dto.setGender(toString(row[i++]));
+        dto.setBirthDate(toLocalDateSafe(row[i++]));
+        dto.setColorFeatures(toString(row[i++]));
+        dto.setPrice(toBigDecimal(row[i++]));
+        dto.setHealthStatus(toString(row[i++]));
+        dto.setAdoptionStatus(toString(row[i++]));
+        dto.setImageUrl(toString(row[i++]));
+        dto.setPostsCreatedAt(toLocalDateTimeSafe(row[i++]));
+        dto.setPostsUpdatedAt(toLocalDateTimeSafe(row[i++]));
+
+        
+
+        dto.setSellerId(toLongSafe(row[i++]));
+        dto.setSellerUsername(toString(row[i++]));
+        dto.setSellerAddress1(toString(row[i++]));
+        dto.setSellerAddress2(toString(row[i++]));
+        dto.setSellerUserType(toString(row[i++]));
+        dto.setSellerEmail(toString(row[i++]));
+        dto.setSellerPhoneNumber(toString(row[i]));
+        
 
         return dto;
     }
 
-    public void apply(Long postId, String loginId) {
-        // TODO: 계약 신청 로직
+    // =========================
+    // SAFE LONG
+    // =========================
+    private Long toLongSafe(Object obj) {
+        if (obj == null) return null;
+
+        if (obj instanceof Number n) {
+            return n.longValue();
+        }
+
+        try {
+            String v = obj.toString().trim();
+            if (v.isEmpty() || "null".equalsIgnoreCase(v)) return null;
+            return Long.parseLong(v);
+        } catch (Exception e) {
+            System.out.println("❌ Long 변환 실패 값: " + obj);
+            return null;
+        }
     }
 
-    public void cancel(Long postId, String loginId) {
-        // TODO: 계약 취소 로직
+    // =========================
+    // SAFE STRING
+    // =========================
+    private String toString(Object obj) {
+        if (obj == null) return null;
+
+        String v = obj.toString().trim();
+        if (v.isEmpty() || "null".equalsIgnoreCase(v)) return null;
+
+        return v;
     }
 
-    public void completeByAdmin(Long postId, String adminLoginId) {
-        // TODO: 관리자 완료 처리
+    // =========================
+    // SAFE BIGDECIMAL
+    // =========================
+    private BigDecimal toBigDecimal(Object obj) {
+        if (obj == null) return null;
+        if (obj instanceof BigDecimal bd) return bd;
+        if (obj instanceof Number n) return BigDecimal.valueOf(n.doubleValue());
+
+        try {
+            return new BigDecimal(obj.toString().trim());
+        } catch (Exception e) {
+            return null;
+        }
     }
 
-    public void cancelByAdmin(Long postId, String adminLoginId) {
-        // TODO: 관리자 취소 처리
+    // =========================
+    // SAFE DATETIME
+    // =========================
+    private LocalDateTime toLocalDateTimeSafe(Object obj) {
+        if (obj == null) return null;
+
+        if (obj instanceof java.sql.Timestamp ts) {
+            return ts.toLocalDateTime();
+        }
+
+        if (obj instanceof LocalDateTime ldt) {
+            return ldt;
+        }
+
+        try {
+            String v = obj.toString().trim();
+
+            if (v.isEmpty() || "null".equalsIgnoreCase(v)) return null;
+
+            return LocalDateTime.parse(v.replace(" ", "T"));
+        } catch (Exception e) {
+            System.out.println("❌ DateTime 변환 실패: " + obj);
+            return null;
+        }
     }
 
-    
+    // =========================
+    // SAFE DATE
+    // =========================
+    private LocalDate toLocalDateSafe(Object obj) {
+        if (obj == null) return null;
+
+        if (obj instanceof java.sql.Date d) {
+            return d.toLocalDate();
+        }
+
+        if (obj instanceof java.sql.Timestamp ts) {
+            return ts.toLocalDateTime().toLocalDate();
+        }
+
+        if (obj instanceof LocalDate ld) {
+            return ld;
+        }
+
+        try {
+            String v = obj.toString().trim();
+
+            if (v.isEmpty() || "null".equalsIgnoreCase(v)) return null;
+
+            // 🔥 핵심: 시간 포함된 경우 제거
+            if (v.contains(" ")) {
+                v = v.split(" ")[0];
+            }
+
+            return LocalDate.parse(v);
+        } catch (Exception e) {
+            System.out.println("❌ Date 변환 실패: " + obj);
+            return null;
+        }
+    }
+
+    // =========================
+    // TODO
+    // =========================
+    public void apply(Long postId, String loginId) {}
+    public void cancel(Long postId, String loginId) {}
+    public void completeByAdmin(Long postId, String adminLoginId) {}
+    public void cancelByAdmin(Long postId, String adminLoginId) {}
 }
