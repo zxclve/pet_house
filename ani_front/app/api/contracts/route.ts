@@ -4,7 +4,7 @@ export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
 
   const res = await fetch(
-    `http://localhost:8080/api/contracts?${searchParams.toString()}`
+    `http://localhost:8686/api/contracts?${searchParams.toString()}`
   );
 
   const data = await res.json();
