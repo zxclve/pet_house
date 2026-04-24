@@ -1,6 +1,6 @@
 package pet.house.animal.User;
 
-import lombok.RequiredArgsConstructor; // 추가
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -32,30 +32,33 @@ public class SecurityConfig {
         http
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .csrf(csrf -> csrf.disable())
-            .headers(headers -> headers.frameOptions(frame -> frame.disable()))            
+            .headers(headers -> headers.frameOptions(frame -> frame.disable()))
             .sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers(
-                    "/user/login", 
+                    "/user/login",
                     "/user/signup",
-                    
+
                     // Swagger
                     "/v3/api-docs/**",
                     "/swagger-ui/**",
                     "/swagger-ui.html",
 
                     // h2
-                    "/h2-console/**"
+                    "/h2-console/**",
 
+                    // 🔥 추가 (핵심: contracts API 허용)
+                    "/api/contracts/**"
                 ).permitAll()
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form.disable())
             .logout(logout -> logout.disable())
-            
-            .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), 
-                            UsernamePasswordAuthenticationFilter.class);
+            .addFilterBefore(
+                new JwtAuthenticationFilter(jwtTokenProvider),
+                UsernamePasswordAuthenticationFilter.class
+            );
 
         return http.build();
     }
@@ -63,12 +66,12 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        
+
         configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
         configuration.setAllowCredentials(true);
-        
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;

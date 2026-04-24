@@ -44,10 +44,10 @@ public class User {
     @Column(name = "password", nullable = false, length = 255)
     private String password;
 
-    @Column(name = "username", nullable = false, length = 50)
+    @Column(name = "user_name", nullable = false, length = 50)
     private String username;
 
-    @Column(name = "phone_number", nullable = false, length = 20)
+    @Column(name = "phone_num", nullable = false, length = 20)
     private String phone_number;
 
     @Column(name = "address1", nullable = false, length = 255)

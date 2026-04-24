@@ -6,16 +6,16 @@
   "rootMainFiles": [],
   "pages": {
     "/_error": [
-      "static/chunks/0jmo_next_dist_compiled_02kqce~._.js",
-      "static/chunks/0jmo_next_dist_shared_lib_0bi6r.6._.js",
-      "static/chunks/0jmo_next_dist_client_04r2_5c._.js",
-      "static/chunks/0jmo_next_dist_07~h8vz._.js",
-      "static/chunks/[next]_entry_page-loader_ts_0xmyeuo._.js",
-      "static/chunks/0jmo_react-dom_0d~ac6c._.js",
-      "static/chunks/0jmo_0.t2ko.._.js",
-      "static/chunks/[root-of-the-server]__0yzi7d2._.js",
-      "static/chunks/Desktop_성기원_pethouse v_0_1_pet_house_ani_front_pages__error_07xvfw~._.js",
-      "static/chunks/0nkw_성기원_pethouse v_0_1_pet_house_ani_front_pages__error_06743q0._.js"
+      "static/chunks/node_modules_next_dist_compiled_0o6l_m6._.js",
+      "static/chunks/node_modules_next_dist_shared_lib_12bi_n7._.js",
+      "static/chunks/node_modules_next_dist_client_0pe1dg-._.js",
+      "static/chunks/node_modules_next_dist_0rt-2cr._.js",
+      "static/chunks/[next]_entry_page-loader_ts_0rqw6yo._.js",
+      "static/chunks/node_modules_react-dom_0bruynb._.js",
+      "static/chunks/node_modules_0lx093h._.js",
+      "static/chunks/[root-of-the-server]__01mw43t._.js",
+      "static/chunks/pages__error_07xvfw~._.js",
+      "static/chunks/turbopack-pages__error_016chbq._.js"
     ]
   },
   "ampFirstPages": []
