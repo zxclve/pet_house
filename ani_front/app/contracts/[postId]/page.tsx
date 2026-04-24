@@ -8,6 +8,7 @@ export default function ContractPage({ params }: { params: Promise<{ postId: str
   const { postId } = use(params);
   const id = Number(postId);
 
+  
   const [post, setPost] = useState<any>(null);
   const [contracts, setContracts] = useState<any[]>([]);
 
