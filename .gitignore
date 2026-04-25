@@ -5,6 +5,8 @@ out/
 *.class
 *.jar
 *.war
+*.zip
+gradle-*/
 
 # IDE
 .idea/
@@ -24,3 +26,7 @@ Thumbs.db
 # Node
 node_modules/
 dist/
+.next/
+*.sst
+
+ani_Back/bin/
