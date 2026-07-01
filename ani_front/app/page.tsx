@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { getAllPets, PetItem } from './lib/petStore';
+import type { PetItem } from './lib/petStore';
+import { fetchPostsPage, mapPostToPetItem } from './lib/postApi';
 
 export default function Home() {
   const router = useRouter();
@@ -12,10 +13,40 @@ export default function Home() {
   const [searchKeyword, setSearchKeyword] = useState('');
   const [navActive, setNavActive] = useState('홈');
   const [selectedPet, setSelectedPet] = useState<PetItem | null>(null);
+  const [listLoading, setListLoading] = useState(true);
+  const [listError, setListError] = useState<string | null>(null);
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [username, setUsername] = useState('');
 
   useEffect(() => {
-    setPets(getAllPets());
+    if (typeof window === 'undefined') return;
+    const token = localStorage.getItem('token');
+    setLoggedIn(!!token);
+    setUsername(localStorage.getItem('username') || '');
   }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      setListLoading(true);
+      setListError(null);
+      try {
+        const pageData = await fetchPostsPage(0, searchKeyword);
+        if (cancelled) return;
+        setPets(pageData.content.map(mapPostToPetItem));
+      } catch (e) {
+        if (!cancelled) {
+          setPets([]);
+          setListError(e instanceof Error ? e.message : '목록을 불러오지 못했습니다.');
+        }
+      } finally {
+        if (!cancelled) setListLoading(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [searchKeyword]);
 
   const handleSetNav = (nav: string) => {
     setNavActive(nav);
@@ -77,12 +108,40 @@ export default function Home() {
         <div className="nav-right">
           <button className="nav-icon-btn">🔔<span className="badge">3</span></button>
           <button className="nav-icon-btn">💛<span className="badge">5</span></button>
-          <button className="login-btn" onClick={() => router.push('/login')}>
-            로그인
-          </button>
-          <button className="login-btn" onClick={() => router.push('/signup')}>
-            회원가입
-          </button>
+          {loggedIn ? (
+            <>
+              <span className="nav-link" style={{ fontSize: 13, fontWeight: 700, color: '#444' }}>
+                {username}님
+              </span>
+              <button
+                className="login-btn"
+                onClick={() => router.push('/contracts')}
+                style={{ background: '#6c5ce7' }}
+              >
+                계약·관리
+              </button>
+              <button
+                className="login-btn"
+                onClick={() => {
+                  localStorage.clear();
+                  setLoggedIn(false);
+                  setUsername('');
+                  router.refresh();
+                }}
+              >
+                로그아웃
+              </button>
+            </>
+          ) : (
+            <>
+              <button className="login-btn" onClick={() => router.push('/login')}>
+                로그인
+              </button>
+              <button className="login-btn" onClick={() => router.push('/signup')}>
+                회원가입
+              </button>
+            </>
+          )}
         </div>
       </nav>
 
@@ -149,14 +208,16 @@ export default function Home() {
           <button className={`tab ${current === '전체' ? 'active' : ''}`} onClick={() => handleFilterPets('전체')}>전체 🐾</button>
           <button className={`tab ${current === '강아지' ? 'active' : ''}`} onClick={() => handleFilterPets('강아지')}>강아지 🐶</button>
           <button className={`tab ${current === '고양이' ? 'active' : ''}`} onClick={() => handleFilterPets('고양이')}>고양이 🐱</button>
-          <button className={`tab ${current === '샴고양이' ? 'active' : ''}`} onClick={() => handleFilterPets('샴고양이')}>샴고양이 🐱</button>
-          <button className={`tab ${current === '코리안 숏헤어' ? 'active' : ''}`} onClick={() => handleFilterPets('코리안 숏헤어')}>코리안 숏헤어 🐱</button>
           <button className={`tab ${current === '토끼' ? 'active' : ''}`} onClick={() => handleFilterPets('토끼')}>토끼 🐰</button>
           <button className={`tab ${current === '햄스터' ? 'active' : ''}`} onClick={() => handleFilterPets('햄스터')}>햄스터 🐹</button>
           <button className={`tab ${current === '새' ? 'active' : ''}`} onClick={() => handleFilterPets('새')}>새 🐦</button>
         </div>
+        {listError && (
+          <p style={{ marginTop: '8px', color: '#c0392b', fontSize: 14 }}>{listError}</p>
+        )}
+        {listLoading && <p style={{ marginTop: '12px', color: '#666' }}>불러오는 중…</p>}
         <div className="pet-grid">
-          {filteredPets.map(pet => (
+          {!listLoading && filteredPets.map(pet => (
             <div key={pet.id} className="pet-card" onClick={() => openPetDetail(pet)}>
               <div className={`pet-img ${pet.imgClass}`}>
                 {pet.isNew && <span className="new-badge">NEW</span>}
@@ -176,8 +237,8 @@ export default function Home() {
             </div>
           ))}
         </div>
-        {filteredPets.length === 0 && (
-          <p style={{ marginTop: '12px', color: '#666' }}>검색 결과가 없습니다.</p>
+        {!listLoading && filteredPets.length === 0 && (
+          <p style={{ marginTop: '12px', color: '#666' }}>표시할 분양 글이 없습니다.</p>
         )}
       </div>
 

@@ -1,18 +1,18 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { fetchContracts } from "../services/contractService";
+import { fetchContracts, type ContractSearchParams } from "../types/contractsApi";
 
 export function useContracts() {
   const [post, setPost] = useState<any>(null);
   const [contracts, setContracts] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const load = async (params?: any) => {
+  const load = async (params?: ContractSearchParams) => {
     setLoading(true);
 
     try {
-      const data = await fetchContracts(params);
+      const data = await fetchContracts({ type: "A", status: "A", ...params });
 
       setPost(data.post);
       setContracts(data.contracts);
@@ -22,7 +22,7 @@ export function useContracts() {
   };
 
   useEffect(() => {
-    load(); // 최초 로딩
+    load({ type: "A", status: "A" });
   }, []);
 
   return {
