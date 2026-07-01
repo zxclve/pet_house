@@ -3,6 +3,7 @@ package pet.house.animal.Post;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Set;
 
 import jakarta.persistence.Column;
@@ -84,11 +85,13 @@ public class PostSite {
             columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     private LocalDateTime updatedAt;
     
-    //입양 신청수 
+    //입양 신청수
+    @JsonIgnore
     @OneToMany
     Set<UserEntity> adoption_sumit;
-    
+
     //분양 신청수
+    @JsonIgnore
     @OneToMany
     Set<UserEntity> sale_sumit;
 }

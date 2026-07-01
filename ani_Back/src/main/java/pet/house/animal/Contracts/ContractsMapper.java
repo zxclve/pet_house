@@ -16,7 +16,7 @@ public class ContractsMapper {
 
         // 🔥 안정성 추가 (필수)
         if (rows == null || rows.isEmpty()) {
-            return new PostHeaderDTO(); // ❗ null 금지
+            return null;
         }
 
         ContractFlatDTO first = rows.get(0);

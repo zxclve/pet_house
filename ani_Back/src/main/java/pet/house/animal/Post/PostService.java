@@ -5,8 +5,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -64,7 +62,7 @@ public class PostService {
 		Pageable pageable = PageRequest.of(page, 20, Sort.by(sorts)); //페이지 설정 -> 한 페이지당 20개씩
 		//Specification<PostSite> spec = search(keyword); //검색 조건 생성(KeyWord 기준으로)
 		if (keyword == null || keyword.trim().isEmpty()) {
-            return postRepository.findAll(pageable);
+            return postRepository.findPageWithRelations(pageable);
         }
 
 		//return postRepository.findAll(spec,pageable); //조건 + 페이징 해서 조회
@@ -73,12 +71,8 @@ public class PostService {
 
     //게시글 상세보기
     public PostSite getPost(Long postId) {
-        Optional<PostSite> post = postRepository.findById(postId); //ID로 게시글 조회
-        if(post.isPresent()){
-            return post.get(); //있으면 반환 없으면 아래 에러 던짐
-        } else {
-            throw new RuntimeException("게시글을 찾을 수 없습니다.------(Service - getPost)");
-        }
+        return postRepository.findDetailById(postId)
+                .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다.------(Service - getPost)"));
     }
 
     //게시글 상태 변경

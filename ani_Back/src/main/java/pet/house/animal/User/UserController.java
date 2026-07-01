@@ -76,6 +76,7 @@ public class UserController {
         
         response.put("token", token);
         response.put("username", member.getUsername());
+        response.put("userid", member.getUserid());
         response.put("message", "로그인 성공");
 
         return ResponseEntity.ok(response);

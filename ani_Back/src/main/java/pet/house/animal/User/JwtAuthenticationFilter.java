@@ -36,7 +36,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 
         HttpServletRequest req = (HttpServletRequest) request;
 
-        //String path = req.getRequestURI();
+        String path = req.getRequestURI();
 
         String token = jwtTokenProvider.resolveToken(req);
 
