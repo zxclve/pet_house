@@ -208,8 +208,6 @@ export default function Home() {
           <button className={`tab ${current === '전체' ? 'active' : ''}`} onClick={() => handleFilterPets('전체')}>전체 🐾</button>
           <button className={`tab ${current === '강아지' ? 'active' : ''}`} onClick={() => handleFilterPets('강아지')}>강아지 🐶</button>
           <button className={`tab ${current === '고양이' ? 'active' : ''}`} onClick={() => handleFilterPets('고양이')}>고양이 🐱</button>
-          <button className={`tab ${current === '샴고양이' ? 'active' : ''}`} onClick={() => handleFilterPets('샴고양이')}>샴고양이 🐱</button>
-          <button className={`tab ${current === '코리안 숏헤어' ? 'active' : ''}`} onClick={() => handleFilterPets('코리안 숏헤어')}>코리안 숏헤어 🐱</button>
           <button className={`tab ${current === '토끼' ? 'active' : ''}`} onClick={() => handleFilterPets('토끼')}>토끼 🐰</button>
           <button className={`tab ${current === '햄스터' ? 'active' : ''}`} onClick={() => handleFilterPets('햄스터')}>햄스터 🐹</button>
           <button className={`tab ${current === '새' ? 'active' : ''}`} onClick={() => handleFilterPets('새')}>새 🐦</button>
