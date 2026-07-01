@@ -1,35 +1,21 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-
-interface Pet {
-  id: number;
-  name: string;
-  breed: string;
-  age: string;
-  type: string;
-  emoji: string;
-  imgClass: string;
-  tags: string[];
-  isNew: boolean;
-  liked: boolean;
-  img: string;
-}
+import { getAllPets, PetItem } from './lib/petStore';
 
 export default function Home() {
   const router = useRouter();
-  const [pets, setPets] = useState([
-    { id:1, name:'몽실이', breed:'보더콜리', age:'3개월', type:'강아지', emoji:'🐶', imgClass:'dog', tags:['순둥이','중형견'], isNew:true, liked:false, img:'/images/bordercollie.png' },
-    { id:2, name:'나비', breed:'샴고양이', age:'5개월', type:'고양이', emoji:'🐱', imgClass:'cat', tags:['독립적','실내형'], isNew:false, liked:true, img:'/images/RussianBlue.jpg' },
-    { id:3, name:'솜사탕', breed:'셔틀랜드 쉽독', age:'2개월', type:'강아지', emoji:'🐰', imgClass:'rabbit', tags:['중형견','온순함','초보OK'], isNew:true, liked:false, img:'/images/ShetlandSheepdog.jpg' },
-    { id:4, name:'해피', breed:'골든리트리버', age:'4개월', type:'강아지', emoji:'🐕', imgClass:'dog', tags:['대형견','활발함'], isNew:false, liked:false, img:'/images/goldenretriever.png' },
-    { id:5, name:'치즈', breed:'웰시코기', age:'1개월', type:'강아지', emoji:'🐹', imgClass:'hamster', tags:['귀여움','소형'], isNew:false, liked:false, img:'/images/WelshCorgi.png' },
-    { id:6, name:'파랑이', breed:'코리안 숏헤어', age:'6개월', type:'고양이', emoji:'🦜', imgClass:'bird', tags:['말하기','활발함'], isNew:true, liked:false, img:'/images/koreancat.jpeg' },
-  ]);
+  const [pets, setPets] = useState<PetItem[]>([]);
   const [current, setCurrent] = useState('전체');
+  const [searchInput, setSearchInput] = useState('');
+  const [searchKeyword, setSearchKeyword] = useState('');
   const [navActive, setNavActive] = useState('홈');
-  const [selectedPet, setSelectedPet] = useState<Pet | null>(null);
+  const [selectedPet, setSelectedPet] = useState<PetItem | null>(null);
+
+  useEffect(() => {
+    setPets(getAllPets());
+  }, []);
 
   const handleSetNav = (nav: string) => {
     setNavActive(nav);
@@ -46,11 +32,15 @@ export default function Home() {
     setCurrent(type);
   };
 
+  const handleSearch = () => {
+    setSearchKeyword(searchInput.trim().toLowerCase());
+  };
+
   const toggleHeart = (id: number) => {
     setPets(pets.map(pet => pet.id === id ? { ...pet, liked: !pet.liked } : pet));
   };
 
-  const openPetDetail = (pet: Pet) => {
+  const openPetDetail = (pet: PetItem) => {
     setSelectedPet(pet);
   };
 
@@ -58,10 +48,19 @@ export default function Home() {
     setSelectedPet(null);
   };
 
-  const filteredPets = current === '전체' ? pets : 
+  const categoryFilteredPets = current === '전체' ? pets : 
     current === '샴고양이' ? pets.filter(pet => pet.breed === '샴고양이') :
     current === '코리안 숏헤어' ? pets.filter(pet => pet.breed === '코리안 숏헤어') :
     pets.filter(pet => pet.type === current);
+
+  const filteredPets = searchKeyword
+    ? categoryFilteredPets.filter((pet) =>
+        [pet.name, pet.breed, pet.type, ...(pet.tags ?? [])]
+          .join(' ')
+          .toLowerCase()
+          .includes(searchKeyword)
+      )
+    : categoryFilteredPets;
 
   return (
     <div className="pet-app">
@@ -93,8 +92,19 @@ export default function Home() {
         <p>행복한 인연이 시작되는 곳</p>
         <div className="search-bar">
           <span>🔍</span>
-          <input type="text" placeholder="품종, 지역 검색..." />
-          <button className="search-btn">검색</button>
+          <input
+            type="text"
+            placeholder="이름, 품종, 종류, 태그 검색..."
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                handleSearch();
+              }
+            }}
+          />
+          <button className="search-btn" onClick={handleSearch}>검색</button>
         </div>
       </div>
 
@@ -161,11 +171,14 @@ export default function Home() {
                     <span key={index} className={`tag ${index === 1 ? 'green' : ''}`}>{tag}</span>
                   ))}
                 </div>
-                <button className="adopt-btn" onClick={(e) => { e.stopPropagation(); router.push("/adoption"); }}>입양 신청하기 🐾</button>
+                <button className="adopt-btn" onClick={(e) => { e.stopPropagation(); router.push(`/adoption?id=${pet.id}`); }}>입양 신청하기 🐾</button>
               </div>
             </div>
           ))}
         </div>
+        {filteredPets.length === 0 && (
+          <p style={{ marginTop: '12px', color: '#666' }}>검색 결과가 없습니다.</p>
+        )}
       </div>
 
       <div style={{ height: '70px' }}></div>
@@ -189,7 +202,7 @@ export default function Home() {
             <p><strong>타입:</strong> {selectedPet.type}</p>
             <p><strong>태그:</strong> {selectedPet.tags.join(', ')}</p>
             {/* <button className="adopt-btn" onClick={() => router.push(`/adopt/${selectedPet.id}`)}>입양 신청하기 🐾</button> */}
-            <button className="adopt-btn" onClick={() => router.push("/adoption")}>입양 신청하기 🐾</button>
+            <button className="adopt-btn" onClick={() => router.push(`/adoption?id=${selectedPet.id}`)}>입양 신청하기 🐾</button>
           </div>
         </div>
       )}

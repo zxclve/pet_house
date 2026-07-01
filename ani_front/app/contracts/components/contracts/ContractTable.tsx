@@ -1,4 +1,4 @@
-import { ContractDTO } from "@/types/contract";
+import { ContractDTO } from "../../types/contract";
 
 export default function ContractTable({
   contracts,

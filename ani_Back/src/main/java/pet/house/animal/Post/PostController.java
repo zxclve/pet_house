@@ -4,11 +4,13 @@ import java.security.Principal;
 
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -44,9 +46,9 @@ public class PostController {
         return postService.getPost(postId); //ID로 게시글 조회
     }
 
-    //게시글 생성
-    // POST /api/posts
-    @PostMapping(consumes = "multipart/form-data")
+    //게시글 생성 (multipart/form-data)
+    // POST /api/posts/create
+    @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<PostSite> create(
             @RequestPart("post") PostSite postSite,
@@ -54,6 +56,15 @@ public class PostController {
     ) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(postService.createPost(postSite, image));
+    }
+
+    //게시글 생성 (application/json)
+    // POST /api/posts/create-json
+    @PostMapping(value = "/create-json", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<PostSite> createJson(@RequestBody PostSite postSite) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(postService.createPost(postSite, null));
     }
 
     //분양신청

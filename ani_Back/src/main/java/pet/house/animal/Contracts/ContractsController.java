@@ -14,9 +14,10 @@ public class ContractsController {
     @GetMapping
     public PostContractResponse getContracts(
             @RequestParam(required = false) String type,
+            @RequestParam(required = false) Long postId,
             @RequestParam(required = false) Long contractId,
             @RequestParam(required = false) String status
     ) {
-        return contractsService.getContracts(type, contractId, status);
+        return contractsService.getContracts(type, postId, contractId, status);
     }
 }

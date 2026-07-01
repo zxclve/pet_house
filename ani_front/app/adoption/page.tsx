@@ -1,18 +1,24 @@
 "use client";
 
-// 페이지 이동 기능을 사용하기 위한 임포트
 import { useRouter } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
+import { getAllPets } from "../lib/petStore";
 
 import "./adoption.css";
 import PageContainer from "../components/PageContainer";
 
 export default function AdoptionDetailPage() {
-  
-  // 페이지 이동 기능
   const router = useRouter();
-  // 기본상태 표시
+  const [petId, setPetId] = useState<number>(0);
+
+  useEffect(() => {
+    const id = Number(new URLSearchParams(window.location.search).get("id"));
+    setPetId(id);
+  }, []);
+
+  const pet = useMemo(() => getAllPets().find((item) => item.id === petId), [petId]);
+
   const status = "신청";
-  // 상태 변화시 나타낼 CSS
   const statusList = [
     { name: "신청", bg: "bg-orange-100", text: "text-orange-600", dot: "bg-orange-500" },
     { name: "취소", bg: "bg-red-100", text: "text-red-600", dot: "bg-red-500" },
@@ -35,52 +41,54 @@ export default function AdoptionDetailPage() {
           </label>
 
           <div className="mt-4 w-full h-64 border-2 border-gray-300 rounded-md bg-gray-50 flex items-center justify-center">
-            <span className="text-sm text-gray-400">
-              이미지 영역
-            </span>
+            {pet?.img ? (
+              <img src={pet.img} alt={pet.name} className="w-full h-full object-contain rounded-md" />
+            ) : (
+              <span className="text-sm text-gray-400">이미지 영역</span>
+            )}
           </div>
         </div>
 
         {/* 동물 종류 */}
         <div>
           <label className="block mb-1 font-medium">동물 종류</label>
-          <div className="w-full border p-2 rounded bg-gray-100 h-10"></div>
+          <div className="w-full border p-2 rounded bg-gray-100 h-10">{pet?.type ?? "-"}</div>
         </div>
 
         {/* 품종 */}
         <div>
           <label className="block mb-1 font-medium">품종</label>
-          <div className="w-full border p-2 rounded bg-gray-100 h-10"></div>
+          <div className="w-full border p-2 rounded bg-gray-100 h-10">{pet?.breed ?? "-"}</div>
         </div>
 
         {/* 성별 */}
         <div>
           <label className="block mb-1 font-medium">성별</label>
-          <div className="w-full border p-2 rounded bg-gray-100 h-10"></div>
+          <div className="w-full border p-2 rounded bg-gray-100 h-10">{pet?.gender ?? "-"}</div>
         </div>
 
         {/* 출생일 */}
         <div>
           <label className="block mb-1 font-medium">출생일</label>
-          <div className="w-full border p-2 rounded bg-gray-100 h-10"></div>
+          <div className="w-full border p-2 rounded bg-gray-100 h-10">{pet?.birthDate ?? pet?.age ?? "-"}</div>
         </div>
 
         {/* 모색 및 특징 */}
         <div>
           <label className="block mb-1 font-medium">모색 및 특징</label>
-          <div className="w-full border p-2 rounded bg-gray-100 h-10"></div>
+          <div className="w-full border p-2 rounded bg-gray-100 h-10">{pet?.colorFeatures ?? pet?.tags?.join(", ") ?? "-"}</div>
         </div>
 
         {/* 건강상태 */}
         <div>
           <label className="block mb-1 font-medium">건강상태</label>
-          <div className="w-full border p-2 rounded bg-gray-100 min-h-[80px]"></div>
+          <div className="w-full border p-2 rounded bg-gray-100 min-h-[80px]">{pet?.healthStatus ?? "-"}</div>
         </div>
 
         {/* 분양가 */}
         <div>
           <label className="block mb-1 font-medium">분양가</label>
-          <div className="w-full border p-2 rounded bg-gray-100 h-10"></div>
+          <div className="w-full border p-2 rounded bg-gray-100 h-10">{pet?.price ? `${pet.price.toLocaleString()}원` : "-"}</div>
         </div>
 
         {/* 분양상태 */}
