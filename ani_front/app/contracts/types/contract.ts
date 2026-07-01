@@ -19,6 +19,7 @@ export interface ContractDTO {
 
 export interface PostHeader {
   postId: number;
+  categoryName?: string;
   breed: string;
   gender: string;
   birthDate: string;
@@ -35,4 +36,23 @@ export interface PostHeader {
 export interface PostContractResponse {
   post: PostHeader;
   contracts: ContractDTO[];
+}
+
+export interface ContractPostSummary {
+  postId: number;
+  breed: string;
+  categoryName: string;
+  imageUrl: string;
+  adoptionStatus: string;
+  sellerUsername: string;
+  price: number;
+  latestContractId: number | null;
+  contractCount: number;
+  activeCount: number;
+  pendingCount: number;
+  cancelledCount: number;
+}
+
+export interface ContractPostsResponse {
+  posts: ContractPostSummary[];
 }

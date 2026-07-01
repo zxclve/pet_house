@@ -4,6 +4,14 @@ import { useState } from "react";
 import { resolveMediaUrl } from "@/app/lib/backendOrigin";
 import { postAdminCancel, postAdminComplete } from "@/app/lib/postApi";
 import { PostHeader } from "../types/contract";
+import "../contracts.css";
+
+function adoptionStatusLabel(status: string) {
+  if (status === "A") return "진행 중";
+  if (status === "Y" || status === "P") return "완료";
+  if (status === "C") return "취소";
+  return status || "-";
+}
 
 export default function ContractHeader({
   post,
@@ -18,64 +26,78 @@ export default function ContractHeader({
     if (busy) return;
     const msg =
       action === "complete"
-        ? "이 분양 건을 완료 처리할까요?"
-        : "관리자 권한으로 분양을 취소 처리할까요?";
+        ? "이 분양글을 입양 완료 처리할까요?"
+        : "이 분양글을 관리자 권한으로 취소 처리할까요?";
     if (!confirm(msg)) return;
+
     setBusy(true);
     try {
       if (action === "complete") await postAdminComplete(post.postId);
       else await postAdminCancel(post.postId);
-      alert("처리되었습니다.");
+      alert("처리가 완료되었습니다.");
       await onRefresh?.();
     } catch (e) {
-      alert(e instanceof Error ? e.message : "요청에 실패했습니다.");
+      alert(e instanceof Error ? e.message : "요청 처리에 실패했습니다.");
     } finally {
       setBusy(false);
     }
   }
 
   return (
-    <div className="border p-4 rounded-xl bg-white shadow">
-      <div className="flex flex-wrap gap-4 justify-between items-start">
-        <div className="flex gap-4">
-          <img
-            src={resolveMediaUrl(post.imageUrl)}
-            alt=""
-            className="w-32 h-32 object-cover rounded"
-          />
-          <div className="space-y-1 text-sm">
-            <div className="text-xs text-gray-500">게시글 #{post.postId}</div>
-            <div>분양자: {post.sellerUsername}</div>
-            <div>주소: {post.sellerAddress1}</div>
-            <div>품종: {post.breed}</div>
-            <div>성별: {post.gender}</div>
-            <div>출생일: {post.birthDate}</div>
-            <div>분양가: {post.price}원</div>
-            <div>건강: {post.healthStatus}</div>
-            <div>게시 상태: {post.adoptionStatus}</div>
-          </div>
-        </div>
+    <div className="contract-header-card">
+      <div className="contract-header-main">
+        <img src={resolveMediaUrl(post.imageUrl)} alt={post.breed} className="contract-header-image" />
 
-        <div className="flex flex-col gap-2 min-w-[200px]">
-          <div className="text-xs font-bold text-gray-600">관리자 처리</div>
-          <button
-            type="button"
-            disabled={busy}
-            onClick={() => run("complete")}
-            className="rounded-full px-4 py-2 text-sm font-bold text-white shadow bg-emerald-500 hover:bg-emerald-600 disabled:opacity-50"
-            style={{ boxShadow: "0 6px 16px rgba(16,185,129,0.25)" }}
-          >
-            분양 완료
-          </button>
-          <button
-            type="button"
-            disabled={busy}
-            onClick={() => run("cancel")}
-            className="rounded-full px-4 py-2 text-sm font-bold text-white shadow bg-rose-500 hover:bg-rose-600 disabled:opacity-50"
-            style={{ boxShadow: "0 6px 16px rgba(244,63,94,0.25)" }}
-          >
-            관리자 취소
-          </button>
+        <div className="contract-header-content">
+          <div className="contract-header-top">
+            <div>
+              <div className="contract-header-id">Post #{post.postId}</div>
+              <div className="contract-header-title">
+                {post.categoryName ?? "반려동물"} / {post.breed}
+              </div>
+              <div className="contract-header-owner">등록자 {post.sellerUsername}</div>
+            </div>
+            <div className="contract-header-status">{adoptionStatusLabel(post.adoptionStatus)}</div>
+          </div>
+
+          <div className="contract-header-info-grid">
+            <div className="contract-header-info-box">
+              <span>성별</span>
+              <strong>{post.gender || "-"}</strong>
+            </div>
+            <div className="contract-header-info-box">
+              <span>출생일</span>
+              <strong>{post.birthDate || "-"}</strong>
+            </div>
+            <div className="contract-header-info-box">
+              <span>분양가</span>
+              <strong>{Number(post.price || 0).toLocaleString()}원</strong>
+            </div>
+            <div className="contract-header-info-box">
+              <span>주소</span>
+              <strong>{post.sellerAddress1 || "-"}</strong>
+            </div>
+          </div>
+
+          <div className="contract-header-notes">
+            <div>
+              <span>특징</span>
+              <p>{post.colorFeatures || "등록된 특징 정보가 없습니다."}</p>
+            </div>
+            <div>
+              <span>건강 상태</span>
+              <p>{post.healthStatus || "등록된 건강 정보가 없습니다."}</p>
+            </div>
+          </div>
+
+          <div className="contract-header-actions">
+            <button type="button" disabled={busy} onClick={() => run("complete")} className="contract-complete-btn">
+              분양 완료
+            </button>
+            <button type="button" disabled={busy} onClick={() => run("cancel")} className="contract-cancel-btn">
+              관리자 취소
+            </button>
+          </div>
         </div>
       </div>
     </div>

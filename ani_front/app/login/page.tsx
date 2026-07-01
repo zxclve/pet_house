@@ -27,6 +27,10 @@ export default function LoginPage() {
         if (data.userid != null) {
           localStorage.setItem("userid", String(data.userid));
         }
+        localStorage.setItem("isAdmin", data.isAdmin ? "true" : "false");
+        if (data.usertype) {
+          localStorage.setItem("usertype", data.usertype);
+        }
         window.location.href = "/";
       } else {
         setError(data.message || "로그인 실패");
@@ -37,13 +41,12 @@ export default function LoginPage() {
   }
 
   return (
-    <PageContainer
-      title="로그인"
-      subtitle="펫 하우스에 로그인하고 입양을 시작해보세요"
-    >
+    <PageContainer title="로그인" subtitle="펫 하우스에 로그인하고 입양을 시작해보세요">
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="loginid" className="form-label">아이디</label>
+          <label htmlFor="loginid" className="form-label">
+            아이디
+          </label>
           <input
             id="loginid"
             name="loginid"
@@ -55,7 +58,9 @@ export default function LoginPage() {
         </div>
 
         <div className="form-group">
-          <label htmlFor="password" className="form-label">비밀번호</label>
+          <label htmlFor="password" className="form-label">
+            비밀번호
+          </label>
           <input
             id="password"
             name="password"
@@ -68,7 +73,9 @@ export default function LoginPage() {
 
         {error && <p className="error-text">{error}</p>}
 
-        <button type="submit" className="primary-btn">로그인</button>
+        <button type="submit" className="primary-btn">
+          로그인
+        </button>
       </form>
     </PageContainer>
   );

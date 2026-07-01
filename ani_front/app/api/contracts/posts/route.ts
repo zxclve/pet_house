@@ -5,7 +5,7 @@ export async function GET(req: Request) {
   const authHeader = req.headers.get("authorization");
   const backendBaseUrl = process.env.BACKEND_BASE_URL ?? "http://localhost:8686";
 
-  const res = await fetch(`${backendBaseUrl}/api/contracts?${searchParams.toString()}`, {
+  const res = await fetch(`${backendBaseUrl}/api/contracts/posts?${searchParams.toString()}`, {
     headers: authHeader ? { Authorization: authHeader } : undefined,
     cache: "no-store",
   });
@@ -13,12 +13,10 @@ export async function GET(req: Request) {
   if (!res.ok) {
     const errorBody = await res.text();
     return NextResponse.json(
-      { message: errorBody || "계약 목록 조회에 실패했습니다." },
+      { message: errorBody || "계약 관리 목록을 불러오지 못했습니다." },
       { status: res.status }
     );
   }
 
-  const data = await res.json();
-
-  return NextResponse.json(data);
+  return NextResponse.json(await res.json());
 }

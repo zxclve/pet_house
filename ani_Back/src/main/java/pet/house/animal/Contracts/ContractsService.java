@@ -37,7 +37,11 @@ public class ContractsService {
     private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
-    public PostContractResponse getContracts(String type, Long contractId, String status) {
+    public PostContractResponse getContracts(String type, Long postId, Long contractId, String status) {
+        if (postId != null) {
+            List<ContractFlatDTO> flat = loadContractsViaJpa(postId, contractId, status);
+            return contractsMapper.toResponse(flat);
+        }
         try {
             List<Object[]> rows = contractsRepository.callContractsProc(type, contractId, status);
             if (rows == null) {
@@ -49,16 +53,31 @@ public class ContractsService {
             return contractsMapper.toResponse(dtoList);
         } catch (Exception e) {
             log.debug("Stored procedure inquiry unavailable, using JPA fallback: {}", e.toString());
-            List<ContractFlatDTO> flat = loadContractsViaJpa(contractId, status);
+            List<ContractFlatDTO> flat = loadContractsViaJpa(null, contractId, status);
             return contractsMapper.toResponse(flat);
         }
     }
 
-    private List<ContractFlatDTO> loadContractsViaJpa(Long contractId, String status) {
+    @Transactional(readOnly = true)
+    public ContractPostsResponse getContractPosts(String status) {
+        Status st = parseStatus(status);
+        List<Long> ids = contractsRepository.findPostIdsForListing(st);
+        List<ContractPostSummaryDTO> posts = ids.stream()
+                .map(postId -> toPostSummary(postId, st))
+                .collect(Collectors.toList());
+
+        ContractPostsResponse response = new ContractPostsResponse();
+        response.setPosts(posts);
+        return response;
+    }
+
+    private List<ContractFlatDTO> loadContractsViaJpa(Long postId, Long contractId, String status) {
         Status st = parseStatus(status);
         Long targetPostId;
 
-        if (contractId != null) {
+        if (postId != null) {
+            targetPostId = postId;
+        } else if (contractId != null) {
             Contracts anchor = contractsRepository.findById(contractId).orElse(null);
             if (anchor == null) {
                 return List.of();
@@ -87,6 +106,36 @@ public class ContractsService {
         return contracts.stream()
                 .map(c -> toFlatDto(c, post))
                 .collect(Collectors.toList());
+    }
+
+    private ContractPostSummaryDTO toPostSummary(Long postId, Status statusFilter) {
+        List<Contracts> contracts = new ArrayList<>(contractsRepository.findByPostIdOrderByContractIdAsc(postId));
+        if (statusFilter != null) {
+            contracts = contracts.stream()
+                    .filter(c -> statusFilter.equals(c.getStatus()))
+                    .collect(Collectors.toList());
+        }
+
+        PostSite post = postService.getPost(postId);
+        Category category = post.getCategory();
+        UserEntity seller = post.getSeller();
+
+        ContractPostSummaryDTO dto = new ContractPostSummaryDTO();
+        dto.setPostId(postId);
+        dto.setBreed(post.getBreed());
+        dto.setCategoryName(category != null ? category.getCategoryName() : null);
+        dto.setImageUrl(post.getImageUrl());
+        dto.setAdoptionStatus(post.getStatus() != null ? post.getStatus().name() : null);
+        dto.setSellerUsername(seller != null ? seller.getUsername() : null);
+        dto.setPrice(post.getPrice());
+        dto.setContractCount(contracts.size());
+        dto.setActiveCount((int) contracts.stream().filter(c -> c.getStatus() == Status.A).count());
+        dto.setPendingCount((int) contracts.stream().filter(c -> c.getStatus() == Status.P).count());
+        dto.setCancelledCount((int) contracts.stream().filter(c -> c.getStatus() == Status.C).count());
+        dto.setLatestContractId(
+                contracts.isEmpty() ? null : contracts.get(contracts.size() - 1).getContractId()
+        );
+        return dto;
     }
 
     private static Status parseStatus(String status) {

@@ -177,7 +177,7 @@ export default function Home() {
         <div className="featured-banner">
           <div className="featured-text">
             <h3>이주의 추천 친구</h3>
-            <p>특별히 선발된 아이들을<br />만나보세요!</p>
+            <p>새로운 아이들을<br />만나보세요!</p>
           </div>
           <div className="featured-emoji">🐩</div>
         </div>
