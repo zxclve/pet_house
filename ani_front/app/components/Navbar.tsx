@@ -36,6 +36,11 @@ export default function Navbar() {
                   </span>
                 </li>
                 <li className="nav-item">
+                  <Link className="nav-link" href="/contracts">
+                    계약·관리
+                  </Link>
+                </li>
+                <li className="nav-item">
                   <button className="nav-link btn btn-link" onClick={handleLogout}>
                     로그아웃
                   </button>

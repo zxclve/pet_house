@@ -1,15 +1,15 @@
 export interface ContractSearchParams {
   type?: string;
   contractId?: number;
-  status: string;
+  status?: string;
 }
 
-export const fetchContracts = async (params: ContractSearchParams) => {
+export const fetchContracts = async (params: ContractSearchParams = {}) => {
   const query = new URLSearchParams();
 
-  if (params.type) query.append("type", params.type);
+  query.append("type", params.type ?? "A");
   if (params.contractId) query.append("contractId", String(params.contractId));
-  query.append("status", params.status);
+  query.append("status", params.status ?? "A");
 
   const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
   const headers: HeadersInit = token ? { Authorization: `Bearer ${token}` } : {};

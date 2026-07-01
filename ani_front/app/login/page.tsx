@@ -24,6 +24,9 @@ export default function LoginPage() {
       if (res.ok) {
         localStorage.setItem("token", data.token);
         localStorage.setItem("username", data.username);
+        if (data.userid != null) {
+          localStorage.setItem("userid", String(data.userid));
+        }
         window.location.href = "/";
       } else {
         setError(data.message || "로그인 실패");
